@@ -1,0 +1,69 @@
+# depslib dependency file v1.0
+1729636398 source:c:\users\frank\desktop\nuevo\proyecto\main.cpp
+	"miniwin.h"
+	"game.h"
+
+1461821620 c:\users\frank\desktop\nuevo\proyecto\miniwin.h
+	<iostream>
+
+1726504772 source:c:\users\frank\desktop\nuevo\proyecto\miniwin.cpp
+	<fstream>
+	<sstream>
+	<queue>
+	<math.h>
+	<process.h>
+	<windows.h>
+	<windowsx.h>
+	"miniwin.h"
+	<cstdio>
+	<cstdlib>
+	<iostream>
+	<string>
+	<queue>
+	<X11/Xlib.h>
+	<X11/Xutil.h>
+	<X11/Xos.h>
+	<X11/Xatom.h>
+	<X11/keysym.h>
+	"miniwin.h"
+
+1729720650 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
+	"enemy.h"
+	"miniwin.h"
+
+1729635859 c:\users\frank\desktop\nuevo\proyecto\enemy.h
+	"miniwin.h"
+	<string>
+	<vector>
+	<map>
+	<cstdlib>
+	<ctime>
+
+1729578322 c:\users\frank\desktop\nuevo\proyecto\game.h
+	<vector>
+	"player.h"
+	"enemy.h"
+
+1729576948 c:\users\frank\desktop\nuevo\proyecto\player.h
+	"miniwin.h"
+	<string>
+	<vector>
+	<map>
+
+1729728347 source:c:\users\frank\desktop\nuevo\proyecto\player.cpp
+	"player.h"
+	"miniwin.h"
+	<windows.h>
+
+1729554015 source:c:\users\frank\desktop\nuevo\proyecto\fondo.cpp
+	"fondo.h"
+	"miniwin.h"
+
+1729553779 c:\users\frank\desktop\nuevo\proyecto\fondo.h
+	"player.h"
+
+1729720622 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
+	"game.h"
+	<windows.h>
+	"miniwin.h"
+
