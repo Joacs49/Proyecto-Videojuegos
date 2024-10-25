@@ -3,8 +3,9 @@
 #include "miniwin.h"
 
 using namespace miniwin;
+using namespace std;
 
-game::game() : player(300, 420), juegoActivo(true) {
+game::game() : player(300, 420), vida(5), score(0), juegoActivo(true) {
     enemigos.push_back(enemy(100, 50));
     enemigos.push_back(enemy(200, 100));
     enemigos.push_back(enemy(300, 150));
@@ -30,13 +31,15 @@ void game::manejarEntradas() {
         exit(0);
     }
 
-    player.mover(t);
+    if (juegoActivo) {
+        player.mover();
 
-    if (t == ESPACIO && !disparo) {
-        disparo = true;
-        balaX = player.getX() + 40;
-        balaY = player.getY();
-        PlaySound("Sonido.wav", NULL, SND_ASYNC);
+        if (t == ESPACIO && !disparo) {
+            disparo = true;
+            balaX = player.getX() + 40;
+            balaY = player.getY();
+            PlaySound("Sonido.wav", NULL, SND_ASYNC);
+        }
     }
 }
 
@@ -69,6 +72,14 @@ void game::actualizar() {
     verificarColisiones();
 }
 
+void game::dibujarBarraVida() {
+    color_rgb(255, 0, 0);
+    rectangulo_lleno(700, 550, 700 + 100, 560);
+
+    color_rgb(0, 255, 0);
+    rectangulo_lleno(700, 550, 700 + (100 * vida / 5), 560);
+}
+
 bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
     return x1 < x2 + ancho2 &&
            x1 + ancho1 > x2 &&
@@ -79,26 +90,20 @@ bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int a
 void game::verificarColisiones() {
     static int cont = 0;
 
-    // Verificar colisión entre el jugador y los enemigos
-    for (const auto& enemigo : enemigos) {
+    for (auto& enemigo : enemigos) {
         if (colision(player.getX(), player.getY(),
                      player.getAncho(), player.getAlto(),
                      enemigo.getX(), enemigo.getY(),
                      enemigo.getAncho(), enemigo.getAlto())) {
+            vida--; // Disminuir la vida
 
-            borra();
-            color_rgb(0, 0, 0);
-            rectangulo_lleno(0, 0, 800, 600);
-            PlaySound("explosion.wav", NULL, SND_ASYNC);
-
-            color(ROJO);
-            texto(320, 270, "FIN DEL JUEGO");
-            refresca();
-            espera(100);
-
-            juegoActivo = false;
-            enemigos.clear();
-            return;
+            // Si la vida llega a 0, termina el juego
+            if (vida <= 0) {
+                PlaySound("explosion.wav", NULL, SND_ASYNC);
+                juegoActivo = false;
+                enemigos.clear();
+                return;
+            }
         }
 
         // Verificar colisión entre la bala enemiga y el jugador
@@ -106,20 +111,18 @@ void game::verificarColisiones() {
             if (colision(player.getX(), player.getY(),
                          player.getAncho(), player.getAlto(),
                          enemigo.balaEnemigaX, enemigo.balaEnemigaY, 4, 10)) {
+                vida--;
 
-                borra();
-                color_rgb(0, 0, 0);
-                rectangulo_lleno(0, 0, 800, 600);
+                // Revisa si la vida llega a 0 después de recibir el disparo
+                if (vida <= 0) {
+                    PlaySound("explosion.wav", NULL, SND_ASYNC);
+                    juegoActivo = false;
+                    enemigos.clear();
+                    return;
+                }
+
                 PlaySound("explosion.wav", NULL, SND_ASYNC);
-
-                color(ROJO);
-                texto(320, 270, "FIN DEL JUEGO");
-                refresca();
-                espera(100);
-
-                juegoActivo = false;
-                enemigos.clear();
-                return;
+                enemigo.disparoEnemigoActivo = false;
             }
         }
     }
@@ -135,26 +138,42 @@ void game::verificarColisiones() {
             balaY <= enemigo.getY() + enemigo.getAlto()) {
             disparo = false;
             enemigos.erase(enemigos.begin() + i);
+            score += 10;
             PlaySound("explosion.wav", NULL, SND_ASYNC);
-            cont +=1 ;
+            cont++;
             break;
         }
     }
 
+    // Verificar si se han destruido todos los enemigos y el conteo
     if (enemigos.empty() && cont == 3) {
         borra();
         color(ROJO);
-        texto(320, 270, "GANO - Joaquin");
+        const char* mensaje = "GANO JOAQUIN";
+        int anchoTexto = strlen(mensaje) * 8;
+        int altoTexto = 15;
+
+        int posX = (800 - anchoTexto) / 2;
+        int posY = (600 - altoTexto) / 2;
+
+        texto(posX, posY, mensaje);
         refresca();
         espera(100);
         juegoActivo = false;
     }
 }
 
-
 void game::datos(int v, int z) {
     color(ROJO);
-    texto(v, z, "Joaquin Munoz");
+
+    const char* mensaje = "Joaquin Muñoz";
+    int anchoTexto = strlen(mensaje) * 8;
+    int altoTexto = 15;
+
+    int posX = (800 - anchoTexto) / 2;
+    int posY = (600 - altoTexto) / 2;
+
+    texto(posX, posY, mensaje);
 }
 
 void game::dibujar() {
@@ -162,6 +181,12 @@ void game::dibujar() {
 
     if (juegoActivo) {
         player.dibujar();
+        color(ROJO);
+        char scoreText[50];
+        sprintf(scoreText, "Score: %d", score);
+        texto(10, 580, scoreText);
+
+        dibujarBarraVida();
     }
 
     //datos(player.getX(), player.getY() - 20);
@@ -182,7 +207,14 @@ void game::dibujar() {
 
     if (!juegoActivo) {
         color(ROJO);
-        texto(320, 270, "FIN DEL JUEGO");
+        const char* mensaje = "FIN DEL JUEGO";
+        int anchoTexto = strlen(mensaje) * 8;
+        int altoTexto = 15;
+
+        int posX = (800 - anchoTexto) / 2;
+        int posY = (600 - altoTexto) / 2;
+
+        texto(posX, posY, mensaje);
     }
 
     refresca();

@@ -27,11 +27,11 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1729720650 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
+1729825284 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
 	"enemy.h"
 	"miniwin.h"
 
-1729635859 c:\users\frank\desktop\nuevo\proyecto\enemy.h
+1729825229 c:\users\frank\desktop\nuevo\proyecto\enemy.h
 	"miniwin.h"
 	<string>
 	<vector>
@@ -39,18 +39,18 @@
 	<cstdlib>
 	<ctime>
 
-1729578322 c:\users\frank\desktop\nuevo\proyecto\game.h
+1729831561 c:\users\frank\desktop\nuevo\proyecto\game.h
 	<vector>
 	"player.h"
 	"enemy.h"
 
-1729576948 c:\users\frank\desktop\nuevo\proyecto\player.h
+1729832562 c:\users\frank\desktop\nuevo\proyecto\player.h
 	"miniwin.h"
 	<string>
 	<vector>
 	<map>
 
-1729728347 source:c:\users\frank\desktop\nuevo\proyecto\player.cpp
+1729832544 source:c:\users\frank\desktop\nuevo\proyecto\player.cpp
 	"player.h"
 	"miniwin.h"
 	<windows.h>
@@ -62,8 +62,10 @@
 1729553779 c:\users\frank\desktop\nuevo\proyecto\fondo.h
 	"player.h"
 
-1729720622 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
+1729832545 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
 	"game.h"
 	<windows.h>
 	"miniwin.h"
+
+1729741082 c:\users\frank\desktop\nuevo\proyecto\color.h
 

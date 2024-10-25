@@ -133,4 +133,3 @@ void enemy::mueveYDibuja() {
     mover();
     dibujar();
 }
-

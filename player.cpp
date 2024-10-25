@@ -28,20 +28,31 @@ void player::setColor(const std::string& color) {
     }
 }
 
-void player::mover(int tecla) {
+void player::mover() {
+    const int VELOCIDAD = 5;
+
     if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-        offsetX -= 5;
+        if (offsetX > 0) {
+            offsetX -= VELOCIDAD;
+        }
     }
     if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-        offsetX += 5;
+        if (offsetX < 800 - ANCHO_NAVE) {
+            offsetX += VELOCIDAD;
+        }
     }
     if (GetAsyncKeyState(VK_UP) & 0x8000) {
-        offsetY -= 5;
+        if (offsetY > 0) {
+            offsetY -= VELOCIDAD;
+        }
     }
     if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-        offsetY += 5;
+        if (offsetY < 600 - ALTO_NAVE) {
+            offsetY += VELOCIDAD;
+        }
     }
 }
+
 
 void player::dibujaCuadrado(int a, int b, const string& colorRelleno) {
     const int x = a * escalado + offsetX;
@@ -121,6 +132,3 @@ void player::dibujar() {
     dibujaFila(49, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
 
 }
-
-
-

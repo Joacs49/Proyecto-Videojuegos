@@ -13,7 +13,7 @@ class player {
 public:
     player(int x, int y);
 
-    void mover(int tecla);
+    void mover();
 
     int getX() const { return offsetX; }
     int getY() const { return offsetY; }
