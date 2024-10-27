@@ -5,6 +5,8 @@
 #include "player.h"
 #include "enemy.h"
 
+using namespace std;
+
 class game {
 public:
     game();
@@ -19,7 +21,7 @@ public:
 private:
     player player;
     bool juegoActivo;
-    std::vector<enemy> enemigos;
+    vector<enemy> enemigos;
     bool disparo = false;
     int balaX, balaY;
     int score = 0;

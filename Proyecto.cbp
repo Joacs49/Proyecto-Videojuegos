@@ -38,7 +38,6 @@
 			<Add library="comctl32" />
 			<Add library="C:/Users/frank/Desktop/Nuevo/Proyecto/libwinmm-1.a" />
 		</Linker>
-		<Unit filename="color.h" />
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
 		<Unit filename="game.cpp" />

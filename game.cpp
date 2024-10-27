@@ -5,7 +5,7 @@
 using namespace miniwin;
 using namespace std;
 
-game::game() : player(300, 420), vida(5), score(0), juegoActivo(true) {
+game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5) {
     enemigos.push_back(enemy(100, 50));
     enemigos.push_back(enemy(200, 100));
     enemigos.push_back(enemy(300, 150));

@@ -2,6 +2,7 @@
 #include "miniwin.h"
 
 using namespace miniwin;
+using namespace std;
 
 const int escalado = 2;
 const bool pintarBorde = false;
@@ -25,9 +26,9 @@ enemy::enemy(int x, int y) : xPos(x), yPos(y), direccion(DERECHA_ENEMIGO), conta
     };
 }
 
-void enemy::setColor(const std::string& color) {
+void enemy::setColor(const string& color) {
     if (colorMap.find(color) != colorMap.end()) {
-        std::vector<int> rgb = colorMap[color];
+        vector<int> rgb = colorMap[color];
         color_rgb(rgb[0], rgb[1], rgb[2]);
     }
 }
@@ -41,9 +42,10 @@ void enemy::mover() {
         contadorMovimientos = 0;
     }
 
-    if (direccion == IZQUIERDA_ENEMIGO && xPos > 0) {
+    if (direccion == IZQUIERDA_ENEMIGO && xPos > 20) {
         xPos -= 16;
-    } else if (direccion == DERECHA_ENEMIGO && xPos < 640) {
+
+    } else if (direccion == DERECHA_ENEMIGO && xPos < 720) {
         xPos += 16;
     }
 
@@ -62,8 +64,8 @@ void enemy::disparar() {
     if (disparoEnemigoActivo) {
         balaEnemigaY += 10;
 
-        miniwin::color_rgb(255, 0, 0);
-        miniwin::rectangulo_lleno(balaEnemigaX, balaEnemigaY, balaEnemigaX + 4, balaEnemigaY + 10);
+        color_rgb(255, 0, 0);
+        rectangulo_lleno(balaEnemigaX, balaEnemigaY, balaEnemigaX + 4, balaEnemigaY + 10);
 
         if (balaEnemigaY >= 600) {
             disparoEnemigoActivo = false;
@@ -72,7 +74,7 @@ void enemy::disparar() {
 }
 
 
-void enemy::dibujaCuadrado(int a, int b, const std::string& colorRelleno) {
+void enemy::dibujaCuadrado(int a, int b, const string& colorRelleno) {
     const int x = a * escalado + xPos;
     const int y = b * escalado + yPos;
 
@@ -89,7 +91,7 @@ void enemy::dibujaCuadrado(int a, int b, const std::string& colorRelleno) {
     }
 }
 
-void enemy::dibujaFila(int fila, const std::vector<std::string>& colores) {
+void enemy::dibujaFila(int fila, const vector<string>& colores) {
     for (size_t i = 0; i < colores.size(); ++i) {
         if (!colores[i].empty()) {
             dibujaCuadrado(i, fila, colores[i]);

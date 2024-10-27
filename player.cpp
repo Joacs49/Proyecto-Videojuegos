@@ -3,6 +3,7 @@
 #include <windows.h>
 
 using namespace miniwin;
+using namespace std;
 
 const int escalado = 2;
 const bool pintarBorde = false;
@@ -21,7 +22,7 @@ player::player(int x, int y) : offsetX(x), offsetY(y) {
     };
 }
 
-void player::setColor(const std::string& color) {
+void player::setColor(const string& color) {
     if (colorMap.find(color) != colorMap.end()) {
         std::vector<int> rgb = colorMap[color];
         color_rgb(rgb[0], rgb[1], rgb[2]);
@@ -53,7 +54,6 @@ void player::mover() {
     }
 }
 
-
 void player::dibujaCuadrado(int a, int b, const string& colorRelleno) {
     const int x = a * escalado + offsetX;
     const int y = b * escalado + offsetY;
@@ -71,7 +71,7 @@ void player::dibujaCuadrado(int a, int b, const string& colorRelleno) {
     }
 }
 
-void player::dibujaFila(int fila, const std::vector<std::string>& colores) {
+void player::dibujaFila(int fila, const vector<string>& colores) {
     for (size_t i = 0; i < colores.size(); ++i) {
         if (!colores[i].empty()) {
             dibujaCuadrado(i, fila, colores[i]);

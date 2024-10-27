@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
+
 class enemy {
 public:
     enemy(int x, int y);
@@ -33,9 +35,9 @@ private:
     int contadorMovimientos;
     int ancho = 40;
     int alto = 30;
-    void dibujaCuadrado(int a, int b, const std::string& colorRelleno);
-    void dibujaFila(int fila, const std::vector<std::string>& colores);
-    std::map<std::string, std::vector<int>> colorMap;
+    void dibujaCuadrado(int a, int b, const string& colorRelleno);
+    void dibujaFila(int fila, const vector<string>& colores);
+    map<string, vector<int>> colorMap;
     void mueveYDibuja();
 };
 
