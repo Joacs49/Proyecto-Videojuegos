@@ -27,11 +27,11 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1730062977 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
+1730073986 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
 	"enemy.h"
 	"miniwin.h"
 
-1730059171 c:\users\frank\desktop\nuevo\proyecto\enemy.h
+1730074340 c:\users\frank\desktop\nuevo\proyecto\enemy.h
 	"miniwin.h"
 	<string>
 	<vector>
@@ -62,7 +62,7 @@
 1729553779 c:\users\frank\desktop\nuevo\proyecto\fondo.h
 	"player.h"
 
-1730062358 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
+1730074158 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
 	"game.h"
 	<windows.h>
 	"miniwin.h"

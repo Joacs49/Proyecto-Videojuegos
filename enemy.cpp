@@ -73,7 +73,6 @@ void enemy::disparar() {
     }
 }
 
-
 void enemy::dibujaCuadrado(int a, int b, const string& colorRelleno) {
     const int x = a * escalado + xPos;
     const int y = b * escalado + yPos;

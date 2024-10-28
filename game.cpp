@@ -80,11 +80,17 @@ void game::dibujarBarraVida() {
     rectangulo_lleno(700, 550, 700 + (100 * vida / 5), 560);
 }
 
-bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
+/*bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
     return x1 < x2 + ancho2 &&
            x1 + ancho1 > x2 &&
            y1 < y2 + alto2 &&
            y1 + alto1 > y2;
+}*/
+
+// Método para verificar si dos rectángulos colisionan
+bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
+    return (x1 < x2 + ancho2 && x1 + ancho1 > x2 &&
+            y1 < y2 + alto2 && y1 + alto1 > y2);
 }
 
 void game::verificarColisiones() {

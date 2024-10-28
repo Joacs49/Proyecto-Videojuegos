@@ -20,7 +20,7 @@ public:
 
     int getX() const { return xPos; };
     int getY() const { return yPos; }
-    void setColor(const std::string& color);
+    void setColor(const string& color);
 
     int getAncho() const { return ancho; }
     int getAlto() const { return alto; }
@@ -33,7 +33,7 @@ private:
     int xPos, yPos;
     int direccion;
     int contadorMovimientos;
-    int ancho = 40;
+    int ancho = 60;
     int alto = 30;
     void dibujaCuadrado(int a, int b, const string& colorRelleno);
     void dibujaFila(int fila, const vector<string>& colores);
