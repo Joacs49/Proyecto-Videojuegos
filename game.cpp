@@ -54,7 +54,7 @@ void game::manejarEntradas() {
 
     if (juegoActivo) {
         player.mover();
-
+        datos(player.getX(), player.getY() - 20);
         if (t == ESPACIO && !disparo) {
             disparo = true;
             balaX = player.getX() + 40;
@@ -222,7 +222,7 @@ void game::cargarNivel() {
     };
 
     // No exceder la cantidad de posiciones disponibles
-    for (int i = 0; i < cantidadEnemigos && i < posiciones.size(); ++i) {
+    for (size_t i = 0; i < static_cast<size_t>(cantidadEnemigos) && i < posiciones.size(); ++i) {
         enemy nuevoEnemigo(posiciones[i].first, posiciones[i].second);
         enemigos.push_back(nuevoEnemigo);
     }
@@ -232,15 +232,14 @@ void game::cargarNivel() {
     vida = 5;
 }
 
-void game::datos(int v, int z) {
+void game::datos(int x, int y) {
     color(ROJO);
 
     const char* mensaje = "Joaquin Muñoz";
     int anchoTexto = strlen(mensaje) * 8;
-    int altoTexto = 15;
 
-    int posX = (800 - anchoTexto) / 2;
-    int posY = (600 - altoTexto) / 2;
+    int posX = x + (player.getAncho() - anchoTexto) / 2;
+    int posY = y + player.getAlto() + 5;
 
     texto(posX, posY, mensaje);
 }
@@ -260,9 +259,9 @@ void game::dibujar() {
         texto(10, 560, nivelText);
 
         dibujarBarraVida();
-    }
 
-    //datos(player.getX(), player.getY() - 20);
+        //datos(player.getX(), player.getY());
+    }
 
     for (auto& enemigo : enemigos) {
         enemigo.dibujar();
