@@ -24,7 +24,7 @@ player::player(int x, int y) : offsetX(x), offsetY(y) {
 
 void player::setColor(const string& color) {
     if (colorMap.find(color) != colorMap.end()) {
-        std::vector<int> rgb = colorMap[color];
+        vector<int> rgb = colorMap[color];
         color_rgb(rgb[0], rgb[1], rgb[2]);
     }
 }
@@ -77,6 +77,11 @@ void player::dibujaFila(int fila, const vector<string>& colores) {
             dibujaCuadrado(i, fila, colores[i]);
         }
     }
+}
+
+void player::setPosicion(int x, int y) {
+    offsetX = x;
+    offsetY = y;
 }
 
 void player::dibujar() {

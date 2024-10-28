@@ -5,14 +5,35 @@
 using namespace miniwin;
 using namespace std;
 
-game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5) {
-    enemigos.push_back(enemy(100, 50));
-    enemigos.push_back(enemy(200, 100));
-    enemigos.push_back(enemy(300, 150));
+game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1) {
+    cargarNivel();
 }
 
 void game::iniciar() {
     vredimensiona(800, 600);
+    mostrarPantallaInicio();
+}
+
+void game::mostrarPantallaInicio() {
+    borra();
+    color(ROJO);
+    const char* mensaje = "Presiona ESPACIO para iniciar el juego";
+    int anchoTexto = strlen(mensaje) * 8;
+    int altoTexto = 15;
+
+    int posX = (800 - anchoTexto) / 2;
+    int posY = (600 - altoTexto) / 2;
+
+    texto(posX, posY, mensaje);
+    refresca();
+
+    while (true) {
+        int t = tecla();
+        if (t == ESPACIO) {
+            break;
+        }
+        espera(10);
+    }
 }
 
 void game::loop() {
@@ -80,13 +101,6 @@ void game::dibujarBarraVida() {
     rectangulo_lleno(700, 550, 700 + (100 * vida / 5), 560);
 }
 
-/*bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
-    return x1 < x2 + ancho2 &&
-           x1 + ancho1 > x2 &&
-           y1 < y2 + alto2 &&
-           y1 + alto1 > y2;
-}*/
-
 // Método para verificar si dos rectángulos colisionan
 bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
     return (x1 < x2 + ancho2 && x1 + ancho1 > x2 &&
@@ -101,7 +115,7 @@ void game::verificarColisiones() {
                      player.getAncho(), player.getAlto(),
                      enemigo.getX(), enemigo.getY(),
                      enemigo.getAncho(), enemigo.getAlto())) {
-            vida--; // Disminuir la vida
+            vida--;
 
             // Si la vida llega a 0, termina el juego
             if (vida <= 0) {
@@ -151,22 +165,71 @@ void game::verificarColisiones() {
         }
     }
 
-    // Verificar si se han destruido todos los enemigos y el conteo
-    if (enemigos.empty() && cont == 3) {
-        borra();
-        color(ROJO);
-        const char* mensaje = "GANO JOAQUIN";
-        int anchoTexto = strlen(mensaje) * 8;
-        int altoTexto = 15;
+    // Verificar si se han destruido todos los enemigos
+    if (enemigos.empty()) {
+        if (nivelActual < 3) {
+            nivelActual++;
+            cargarNivel();
 
-        int posX = (800 - anchoTexto) / 2;
-        int posY = (600 - altoTexto) / 2;
+            borra();
+            color(ROJO);
+            char mensaje[50];
+            sprintf(mensaje, "Nivel %d Completo!", nivelActual);
+            int anchoTexto = strlen(mensaje) * 8;
+            int altoTexto = 15;
 
-        texto(posX, posY, mensaje);
-        refresca();
-        espera(100);
-        juegoActivo = false;
+            int posX = (800 - anchoTexto) / 2;
+            int posY = (600 - altoTexto) / 2;
+
+            texto(posX, posY, mensaje);
+            refresca();
+            espera(2000);
+        } else {
+            borra();
+            color(ROJO);
+            const char* mensaje = "¡GANASTE LA PARTIDA!";
+            int anchoTexto = strlen(mensaje) * 8;
+            int altoTexto = 15;
+
+            int posX = (800 - anchoTexto) / 2;
+            int posY = (600 - altoTexto) / 2;
+
+            texto(posX, posY, mensaje);
+            refresca();
+            espera(2000);
+            juegoActivo = false;
+        }
     }
+}
+
+void game::cargarNivel() {
+    enemigos.clear();
+
+    int cantidadEnemigos;
+    if (nivelActual == 1) {
+        cantidadEnemigos = 3;
+    } else if (nivelActual == 2) {
+        cantidadEnemigos = 5;
+    } else if (nivelActual == 3) {
+        cantidadEnemigos = 6;
+    } else {
+        cantidadEnemigos = 0;
+    }
+
+    // Define posiciones fijas para los enemigos
+    vector<pair<int, int>> posiciones = {
+        {100, 30}, {200, 100}, {300, 170}, {400, 240}, {500, 310}, {600, 380}
+    };
+
+    // No exceder la cantidad de posiciones disponibles
+    for (int i = 0; i < cantidadEnemigos && i < posiciones.size(); ++i) {
+        enemy nuevoEnemigo(posiciones[i].first, posiciones[i].second);
+        enemigos.push_back(nuevoEnemigo);
+    }
+
+    player.setPosicion(300, 420);
+
+    vida = 5;
 }
 
 void game::datos(int v, int z) {
@@ -191,6 +254,10 @@ void game::dibujar() {
         char scoreText[50];
         sprintf(scoreText, "Score: %d", score);
         texto(10, 580, scoreText);
+
+        char nivelText[50];
+        sprintf(nivelText, "Nivel: %d", nivelActual);
+        texto(10, 560, nivelText);
 
         dibujarBarraVida();
     }

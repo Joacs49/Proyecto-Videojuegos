@@ -28,6 +28,9 @@ private:
     int vida = 5;
     bool colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2);
     void dibujarBarraVida();
+    void cargarNivel();
+    int nivelActual;
+    void mostrarPantallaInicio();
 };
 
 #endif

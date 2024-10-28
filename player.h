@@ -21,6 +21,7 @@ public:
     void dibujar();
     int getAncho() const { return ANCHO_NAVE; }
     int getAlto() const { return ALTO_NAVE; }
+    void setPosicion(int x, int y);
 
 private:
     int offsetX;
