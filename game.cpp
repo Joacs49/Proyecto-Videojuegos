@@ -21,7 +21,7 @@ game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), ba
 }
 
 game::~game() {
-    // Cerrar Mix y SDL
+    Mix_HaltMusic();
     Mix_CloseAudio();
     SDL_Quit();
 }
@@ -65,6 +65,11 @@ void game::loop() {
         actualizar();
         dibujar();
         espera(10);
+    }
+
+    if (!juegoActivo) {
+        dibujar();
+        espera(2000);
     }
 }
 
@@ -189,7 +194,7 @@ void game::verificarColisiones() {
     }
 
     // Verificar si se han destruido todos los enemigos
-    if (enemigos.empty()) {
+    if (juegoActivo && enemigos.empty()) {
         if (nivelActual < 3) {
 
 
@@ -324,6 +329,8 @@ void game::dibujar() {
     }
 
     if (!juegoActivo) {
+        Mix_HaltMusic();
+
         color(ROJO);
         const char* mensaje = "FIN DEL JUEGO";
         int anchoTexto = strlen(mensaje) * 8;
