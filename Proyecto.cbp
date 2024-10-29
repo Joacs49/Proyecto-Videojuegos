@@ -37,6 +37,8 @@
 			<Add library="kernel32" />
 			<Add library="comctl32" />
 			<Add library="C:/Users/frank/Desktop/Nuevo/Proyecto/libwinmm-1.a" />
+			<Add library="C:/Users/frank/Desktop/Nuevo/Sonido/SDL2-2.30.8/x86_64-w64-mingw32/bin/SDL2.dll" />
+			<Add directory="../Sonido/SDL2-2.30.8/x86_64-w64-mingw32/include/SDL2" />
 		</Linker>
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />

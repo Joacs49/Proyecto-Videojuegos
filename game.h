@@ -10,6 +10,7 @@ using namespace std;
 class game {
 public:
     game();
+     ~game();
     void iniciar();
     void loop();
     void manejarEntradas();
@@ -31,6 +32,9 @@ private:
     void cargarNivel();
     int nivelActual;
     void mostrarPantallaInicio();
+    static const vector<string> sonidosDeFondo;
+    void reproducirMusicaFondo(int nivel);
+    void reproducirEfecto(const char* rutaEfecto);
 };
 
 #endif

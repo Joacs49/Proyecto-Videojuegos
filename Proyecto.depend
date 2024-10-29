@@ -39,7 +39,7 @@
 	<cstdlib>
 	<ctime>
 
-1730076880 c:\users\frank\desktop\nuevo\proyecto\game.h
+1730156972 c:\users\frank\desktop\nuevo\proyecto\game.h
 	<vector>
 	"player.h"
 	"enemy.h"
@@ -62,10 +62,13 @@
 1729553779 c:\users\frank\desktop\nuevo\proyecto\fondo.h
 	"player.h"
 
-1730076982 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
+1730170722 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
 	"game.h"
 	<windows.h>
 	"miniwin.h"
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	<iostream>
 
 1729741082 c:\users\frank\desktop\nuevo\proyecto\color.h
 

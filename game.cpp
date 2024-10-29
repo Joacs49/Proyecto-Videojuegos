@@ -1,18 +1,41 @@
 #include "game.h"
 #include <windows.h>
 #include "miniwin.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
+#include <iostream>
 
 using namespace miniwin;
 using namespace std;
 
 game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1) {
+
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        cerr << "Error al inicializar SDL: " << SDL_GetError() << endl;
+    }
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        cerr << "Error al inicializar Mix: " << Mix_GetError() << endl;
+    }
+
     cargarNivel();
+}
+
+game::~game() {
+    // Cerrar Mix y SDL
+    Mix_CloseAudio();
+    SDL_Quit();
 }
 
 void game::iniciar() {
     vredimensiona(800, 600);
     mostrarPantallaInicio();
 }
+
+const vector<string> game::sonidosDeFondo =  {
+    "Nivel_1.wav",
+    "Nivel_2.wav",
+    "Nivel_3.wav"
+};
 
 void game::mostrarPantallaInicio() {
     borra();
@@ -59,7 +82,7 @@ void game::manejarEntradas() {
             disparo = true;
             balaX = player.getX() + 40;
             balaY = player.getY();
-            PlaySound("Sonido.wav", NULL, SND_ASYNC);
+            reproducirEfecto("Sonido.wav");
         }
     }
 }
@@ -78,7 +101,7 @@ void game::actualizar() {
 
         if (rand() % 100 < 5) {
             enemigo.disparar();
-            //PlaySound("sonido_enemigo.wav", NULL, SND_ASYNC);
+            reproducirEfecto("sonido_enemigo.wav");
         }
 
         if (enemigo.disparoEnemigoActivo) {
@@ -119,7 +142,7 @@ void game::verificarColisiones() {
 
             // Si la vida llega a 0, termina el juego
             if (vida <= 0) {
-                PlaySound("explosion.wav", NULL, SND_ASYNC);
+                reproducirEfecto("explosion.wav");
                 juegoActivo = false;
                 enemigos.clear();
                 return;
@@ -135,13 +158,13 @@ void game::verificarColisiones() {
 
                 // Revisa si la vida llega a 0 después de recibir el disparo
                 if (vida <= 0) {
-                    PlaySound("explosion.wav", NULL, SND_ASYNC);
+                    reproducirEfecto("explosion.wav");
                     juegoActivo = false;
                     enemigos.clear();
                     return;
                 }
 
-                PlaySound("explosion.wav", NULL, SND_ASYNC);
+                reproducirEfecto("explosion.wav");
                 enemigo.disparoEnemigoActivo = false;
             }
         }
@@ -159,7 +182,7 @@ void game::verificarColisiones() {
             disparo = false;
             enemigos.erase(enemigos.begin() + i);
             score += 10;
-            PlaySound("explosion.wav", NULL, SND_ASYNC);
+            reproducirEfecto("explosion.wav");
             cont++;
             break;
         }
@@ -168,8 +191,7 @@ void game::verificarColisiones() {
     // Verificar si se han destruido todos los enemigos
     if (enemigos.empty()) {
         if (nivelActual < 3) {
-            nivelActual++;
-            cargarNivel();
+
 
             borra();
             color(ROJO);
@@ -182,6 +204,10 @@ void game::verificarColisiones() {
             int posY = (600 - altoTexto) / 2;
 
             texto(posX, posY, mensaje);
+
+            nivelActual++;
+            cargarNivel();
+
             refresca();
             espera(2000);
         } else {
@@ -199,6 +225,24 @@ void game::verificarColisiones() {
             espera(2000);
             juegoActivo = false;
         }
+    }
+}
+
+void game::reproducirMusicaFondo(int nivel) {
+    Mix_Music* musica = Mix_LoadMUS(sonidosDeFondo[nivel - 1].c_str());
+    if (musica) {
+        Mix_PlayMusic(musica, -1);  // -1 para reproducir en loop
+    } else {
+        cerr << "Error al cargar la música de fondo: " << Mix_GetError() << endl;
+    }
+}
+
+void game::reproducirEfecto(const char* rutaEfecto) {
+    Mix_Chunk* efecto = Mix_LoadWAV(rutaEfecto);
+    if (efecto) {
+        Mix_PlayChannel(-1, efecto, 0);  // -1 para usar el primer canal libre
+    } else {
+        cerr << "Error al cargar el efecto: " << Mix_GetError() << endl;
     }
 }
 
@@ -230,6 +274,8 @@ void game::cargarNivel() {
     player.setPosicion(300, 420);
 
     vida = 5;
+
+    reproducirMusicaFondo(nivelActual);
 }
 
 void game::datos(int x, int y) {
