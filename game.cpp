@@ -1,20 +1,24 @@
 #include "game.h"
 #include <windows.h>
 #include "miniwin.h"
-#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include <iostream>
 
 using namespace miniwin;
 using namespace std;
 
-game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1) {
+game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1),
+            balasRestantes(maxBalasPorNivel[0]), tiempoRecargador1(0), tiempoRecargador2(0), recargadoresGenerados(0),
+            tiempoRecargador(0)  {
 
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         cerr << "Error al inicializar SDL: " << SDL_GetError() << endl;
+        return;
     }
+
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         cerr << "Error al inicializar Mix: " << Mix_GetError() << endl;
+        return;
     }
 
     cargarNivel();
@@ -23,13 +27,15 @@ game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), ba
 game::~game() {
     Mix_HaltMusic();
     Mix_CloseAudio();
-    SDL_Quit();
+    SDL_Quit(); // Asegúrate de cerrar SDL
 }
 
 void game::iniciar() {
-    vredimensiona(800, 600);
-    mostrarPantallaInicio();
+    vredimensiona(800,600);
+    mostrarPantallaInicio(); // Muestra la pantalla de inicio
 }
+
+const int game::maxBalasPorNivel[3] = {10, 15, 20};
 
 const vector<string> game::sonidosDeFondo =  {
     "Nivel_1.wav",
@@ -83,10 +89,11 @@ void game::manejarEntradas() {
     if (juegoActivo) {
         player.mover();
         datos(player.getX(), player.getY() - 20);
-        if (t == ESPACIO && !disparo) {
+        if (t == ESPACIO && !disparo && balasRestantes > 0) {
             disparo = true;
             balaX = player.getX() + 40;
             balaY = player.getY();
+            balasRestantes--;
             reproducirEfecto("Sonido.wav");
         }
     }
@@ -118,7 +125,50 @@ void game::actualizar() {
         }
     }
 
+    unsigned long tiempoActual = SDL_GetTicks();
+
+    if (balasRestantes == 0 && recargadoresGenerados < 2) {
+        // Inicializa el temporizador si es la primera vez
+        if (tiempoRecargador1 == 0 && recargadoresGenerados == 0) {
+            tiempoRecargador1 = tiempoActual; // Iniciar el temporizador para el primer recargador
+        }
+
+        // Comprueba si es hora de generar el primer recargador
+        if (recargadoresGenerados == 0 && tiempoActual - tiempoRecargador1 >= 2000) {
+            recargadores.emplace_back(rand() % 780, rand() % 400);
+            tiempoRecargador1 = tiempoActual; // Reiniciar el temporizador
+            recargadoresGenerados++;
+        }
+
+        // Inicializa el temporizador para el segundo recargador si se ha generado el primero
+        if (recargadoresGenerados == 1 && tiempoRecargador2 == 0) {
+            tiempoRecargador2 = tiempoActual; // Iniciar el temporizador para el segundo recargador
+        }
+
+        // Comprueba si es hora de generar el segundo recargador
+        if (recargadoresGenerados == 1 && tiempoActual - tiempoRecargador2 >= 4000) {
+            recargadores.emplace_back(rand() % 780, rand() % 400);
+            tiempoRecargador2 = tiempoActual; // Iniciar el temporizador para el segundo recargador
+            recargadoresGenerados++;
+        }
+    }
+
     verificarColisiones();
+    verificarColisionRecargadores();
+}
+
+void game::verificarColisionRecargadores() {
+    for (auto it = recargadores.begin(); it != recargadores.end(); ) {
+        if (it->isVisible() &&
+            it->colisionaCon(player.getX(), player.getY(), player.getAncho(), player.getAlto())) {
+            balasRestantes += 2;
+            it->desactivar();  // Desactivar recargador después de colisión
+            recargadoresGenerados--;
+            it = recargadores.erase(it); // Elimina el recargador de la lista
+        } else {
+            ++it; // Solo avanzamos si no hemos borrado el elemento
+        }
+    }
 }
 
 void game::dibujarBarraVida() {
@@ -196,8 +246,7 @@ void game::verificarColisiones() {
     // Verificar si se han destruido todos los enemigos
     if (juegoActivo && enemigos.empty()) {
         if (nivelActual < 3) {
-
-
+            recargadores.clear();
             borra();
             color(ROJO);
             char mensaje[50];
@@ -211,6 +260,7 @@ void game::verificarColisiones() {
             texto(posX, posY, mensaje);
 
             nivelActual++;
+            balasRestantes = maxBalasPorNivel[nivelActual - 1];
             cargarNivel();
 
             refresca();
@@ -218,6 +268,7 @@ void game::verificarColisiones() {
         } else {
             borra();
             color(ROJO);
+            recargadores.clear();
             const char* mensaje = "¡GANASTE LA PARTIDA!";
             int anchoTexto = strlen(mensaje) * 8;
             int altoTexto = 15;
@@ -253,6 +304,10 @@ void game::reproducirEfecto(const char* rutaEfecto) {
 
 void game::cargarNivel() {
     enemigos.clear();
+    recargadores.clear();
+
+    tiempoRecargador1 = 0;
+    tiempoRecargador2 = 0;
 
     int cantidadEnemigos;
     if (nivelActual == 1) {
@@ -279,6 +334,8 @@ void game::cargarNivel() {
     player.setPosicion(300, 420);
 
     vida = 5;
+
+    balasRestantes = maxBalasPorNivel[nivelActual - 1];
 
     reproducirMusicaFondo(nivelActual);
 }
@@ -312,6 +369,10 @@ void game::dibujar() {
         dibujarBarraVida();
 
         //datos(player.getX(), player.getY());
+
+        char balasText[50];
+        sprintf(balasText, "Balas: x%d", balasRestantes);
+        texto(700, 530, balasText);
     }
 
     for (auto& enemigo : enemigos) {
@@ -328,10 +389,17 @@ void game::dibujar() {
         rectangulo_lleno(balaX, balaY, balaX + 4, balaY + 10);
     }
 
+    for (auto& recargador : recargadores) {
+        if (recargador.isVisible()) {
+            recargador.dibujar();
+        }
+    }
+
     if (!juegoActivo) {
         Mix_HaltMusic();
 
         color(ROJO);
+        recargadores.clear();
         const char* mensaje = "FIN DEL JUEGO";
         int anchoTexto = strlen(mensaje) * 8;
         int altoTexto = 15;

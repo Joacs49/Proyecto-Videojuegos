@@ -3,7 +3,7 @@
 
 using namespace miniwin;
 
-int main() {
+int _main_() {
     game juego;
     juego.iniciar();
 

@@ -1,6 +1,5 @@
 #ifndef ENEMY_H
 #define ENEMY_H
-
 #include "miniwin.h"
 #include <string>
 #include <vector>

@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -30,6 +32,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="Fondo" />
 		</Compiler>
 		<Linker>
 			<Add library="gdi32" />
@@ -39,6 +42,10 @@
 			<Add library="C:/Users/frank/Desktop/Nuevo/Proyecto/libwinmm-1.a" />
 			<Add directory="../Sonido/SDL2-2.30.8/x86_64-w64-mingw32/include/SDL2" />
 		</Linker>
+		<Unit filename="Fondo/nivel_1.jpg" />
+		<Unit filename="Fondo/nivel_2.jpg" />
+		<Unit filename="Fondo/nivel_3.jpg" />
+		<Unit filename="Recargador.h" />
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
 		<Unit filename="game.cpp" />
@@ -48,6 +55,7 @@
 		<Unit filename="miniwin.h" />
 		<Unit filename="player.cpp" />
 		<Unit filename="player.h" />
+		<Unit filename="recargador.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

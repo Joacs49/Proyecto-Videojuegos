@@ -4,20 +4,26 @@
 #include <vector>
 #include "player.h"
 #include "enemy.h"
+#include "recargador.h"
+#include <SDL/SDL.h>
 
 using namespace std;
 
 class game {
 public:
     game();
-     ~game();
+    ~game();
     void iniciar();
     void loop();
     void manejarEntradas();
     void actualizar();
     void verificarColisiones();
+    void avanzarNivel();
     void dibujar();
     void datos(int v, int z);
+    vector<Recargador> recargadores;
+    unsigned long tiempoRecargador1, tiempoRecargador2;
+    int tiempoRecargador;
 
 private:
     player player;
@@ -31,10 +37,14 @@ private:
     void dibujarBarraVida();
     void cargarNivel();
     int nivelActual;
+    int balasRestantes;
+    static const int maxBalasPorNivel[3];
+    void verificarColisionRecargadores();
     void mostrarPantallaInicio();
     static const vector<string> sonidosDeFondo;
     void reproducirMusicaFondo(int nivel);
     void reproducirEfecto(const char* rutaEfecto);
+    int recargadoresGenerados;
 };
 
 #endif

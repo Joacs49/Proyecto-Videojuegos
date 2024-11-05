@@ -1,12 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "miniwin.h"
 #include <string>
 #include <vector>
 #include <map>
 
-using namespace miniwin;
 using namespace std;
 
 class player {

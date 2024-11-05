@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1729636398 source:c:\users\frank\desktop\nuevo\proyecto\main.cpp
+1730842098 source:c:\users\frank\desktop\nuevo\proyecto\main.cpp
 	"miniwin.h"
 	"game.h"
 
@@ -31,7 +31,7 @@
 	"enemy.h"
 	"miniwin.h"
 
-1730074340 c:\users\frank\desktop\nuevo\proyecto\enemy.h
+1730840481 c:\users\frank\desktop\nuevo\proyecto\enemy.h
 	"miniwin.h"
 	<string>
 	<vector>
@@ -39,13 +39,14 @@
 	<cstdlib>
 	<ctime>
 
-1730156972 c:\users\frank\desktop\nuevo\proyecto\game.h
+1730842097 c:\users\frank\desktop\nuevo\proyecto\game.h
 	<vector>
 	"player.h"
 	"enemy.h"
+	"recargador.h"
+	<SDL/SDL.h>
 
-1730076176 c:\users\frank\desktop\nuevo\proyecto\player.h
-	"miniwin.h"
+1730840373 c:\users\frank\desktop\nuevo\proyecto\player.h
 	<string>
 	<vector>
 	<map>
@@ -62,13 +63,125 @@
 1729553779 c:\users\frank\desktop\nuevo\proyecto\fondo.h
 	"player.h"
 
-1730173768 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
+1730842302 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
 	"game.h"
 	<windows.h>
 	"miniwin.h"
-	<SDL/SDL.h>
 	<SDL/SDL_mixer.h>
 	<iostream>
 
 1729741082 c:\users\frank\desktop\nuevo\proyecto\color.h
+
+1730751003 c:\users\frank\desktop\nuevo\proyecto\recargador.h
+
+1730750919 source:c:\users\frank\desktop\nuevo\proyecto\src\recargador.cpp
+	"Recargador.h"
+
+1730750919 c:\users\frank\desktop\nuevo\proyecto\include\recargador.h
+
+1730751383 source:c:\users\frank\desktop\nuevo\proyecto\recargador.cpp
+	"recargador.h"
+	"miniwin.h"
+
+1730758348 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_bmp.c
+	<stdio.h>
+	<string.h>
+	"SDL/SDL_image.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_endian.h"
+
+1730758353 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img.c
+	<stdio.h>
+	<string.h>
+	<ctype.h>
+	"SDL/SDL_image.h"
+
+1730758359 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_jpg.c
+	<stdio.h>
+	<string.h>
+	<setjmp.h>
+	"SDL/SDL_image.h"
+	<jpeglib.h>
+
+1730758370 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_lbm.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"SDL/SDL_endian.h"
+	"SDL/SDL_image.h"
+
+1730758373 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_gif.c
+	<stdio.h>
+	<string.h>
+	"SDL/SDL_image.h"
+	<stdio.h>
+	<string.h>
+	"SDL.h"
+	"image.h"
+	"rwTable.h"
+
+1730758387 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_pcx.c
+	<stdio.h>
+	<stdlib.h>
+	"SDL/SDL_endian.h"
+	"SDL/SDL_image.h"
+
+1730758393 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_pnm.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<string.h>
+	"SDL/SDL_image.h"
+
+1730758400 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_png.c
+	<stdlib.h>
+	<stdio.h>
+	"SDL/SDL_image.h"
+	"SDL_endian.h"
+	<png.h>
+
+1730758411 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_tif.c
+	<stdio.h>
+	"SDL/SDL_image.h"
+	<tiffio.h>
+
+1730758435 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_tga.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"SDL/SDL_endian.h"
+	"SDL/SDL_image.h"
+
+1730758440 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_xxx.c
+	<stdio.h>
+	"SDL/SDL_image.h"
+
+1730758450 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_xcf.c
+	<stdio.h>
+	<ctype.h>
+	<string.h>
+	<stdlib.h>
+	"SDL/SDL_endian.h"
+	"SDL/SDL_image.h"
+
+1730758455 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_xv.c
+	<stdio.h>
+	<string.h>
+	"SDL/SDL_image.h"
+
+1730758459 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\img_xpm.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<ctype.h>
+	"SDL/SDL_image.h"
+
+1730758464 source:c:\users\frank\desktop\nuevo\proyecto\librerias\fondo\showimage.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"SDL/SDL.h"
+	"SDL/SDL_image.h"
+	"picture.xpm"
 
