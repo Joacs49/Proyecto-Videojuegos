@@ -1,6 +1,7 @@
 #include "game.h"
 #include <windows.h>
 #include "miniwin.h"
+#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include <iostream>
 
@@ -11,14 +12,11 @@ game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), ba
             balasRestantes(maxBalasPorNivel[0]), tiempoRecargador1(0), tiempoRecargador2(0), recargadoresGenerados(0),
             tiempoRecargador(0)  {
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         cerr << "Error al inicializar SDL: " << SDL_GetError() << endl;
-        return;
     }
-
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         cerr << "Error al inicializar Mix: " << Mix_GetError() << endl;
-        return;
     }
 
     cargarNivel();
@@ -285,6 +283,10 @@ void game::verificarColisiones() {
 }
 
 void game::reproducirMusicaFondo(int nivel) {
+    // Libera la música anterior si hay alguna en reproducción
+    Mix_HaltMusic();
+
+    // Carga y reproduce la música de fondo del nivel actual
     Mix_Music* musica = Mix_LoadMUS(sonidosDeFondo[nivel - 1].c_str());
     if (musica) {
         Mix_PlayMusic(musica, -1);  // -1 para reproducir en loop
@@ -292,6 +294,7 @@ void game::reproducirMusicaFondo(int nivel) {
         cerr << "Error al cargar la música de fondo: " << Mix_GetError() << endl;
     }
 }
+
 
 void game::reproducirEfecto(const char* rutaEfecto) {
     Mix_Chunk* efecto = Mix_LoadWAV(rutaEfecto);

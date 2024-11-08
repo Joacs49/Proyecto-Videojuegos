@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1730842098 source:c:\users\frank\desktop\nuevo\proyecto\main.cpp
+1731099343 source:c:\users\frank\desktop\nuevo\proyecto\main.cpp
 	"miniwin.h"
 	"game.h"
 
@@ -27,11 +27,11 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1730074427 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
+1730843670 source:c:\users\frank\desktop\nuevo\proyecto\enemy.cpp
 	"enemy.h"
 	"miniwin.h"
 
-1730840481 c:\users\frank\desktop\nuevo\proyecto\enemy.h
+1731099157 c:\users\frank\desktop\nuevo\proyecto\enemy.h
 	"miniwin.h"
 	<string>
 	<vector>
@@ -39,14 +39,15 @@
 	<cstdlib>
 	<ctime>
 
-1730842097 c:\users\frank\desktop\nuevo\proyecto\game.h
+1731099522 c:\users\frank\desktop\nuevo\proyecto\game.h
 	<vector>
 	"player.h"
 	"enemy.h"
 	"recargador.h"
 	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
 
-1730840373 c:\users\frank\desktop\nuevo\proyecto\player.h
+1731099158 c:\users\frank\desktop\nuevo\proyecto\player.h
 	<string>
 	<vector>
 	<map>
@@ -63,23 +64,24 @@
 1729553779 c:\users\frank\desktop\nuevo\proyecto\fondo.h
 	"player.h"
 
-1730842302 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
+1731099498 source:c:\users\frank\desktop\nuevo\proyecto\game.cpp
 	"game.h"
 	<windows.h>
 	"miniwin.h"
+	<SDL/SDL.h>
 	<SDL/SDL_mixer.h>
 	<iostream>
 
 1729741082 c:\users\frank\desktop\nuevo\proyecto\color.h
 
-1730751003 c:\users\frank\desktop\nuevo\proyecto\recargador.h
+1731099157 c:\users\frank\desktop\nuevo\proyecto\recargador.h
 
 1730750919 source:c:\users\frank\desktop\nuevo\proyecto\src\recargador.cpp
 	"Recargador.h"
 
 1730750919 c:\users\frank\desktop\nuevo\proyecto\include\recargador.h
 
-1730751383 source:c:\users\frank\desktop\nuevo\proyecto\recargador.cpp
+1731099158 source:c:\users\frank\desktop\nuevo\proyecto\recargador.cpp
 	"recargador.h"
 	"miniwin.h"
 

@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "recargador.h"
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 
 using namespace std;
 
