@@ -13,8 +13,13 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include" />
 				</Compiler>
+				<Linker>
+					<Add library="sfml-audio" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-system" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Proyecto" prefix_auto="1" extension_auto="1" />
@@ -32,7 +37,8 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="Fondo" />
+			<Add option="-DSFML_STATIC" />
+			<Add directory="SFML/include" />
 		</Compiler>
 		<Linker>
 			<Add library="gdi32" />
@@ -40,22 +46,33 @@
 			<Add library="kernel32" />
 			<Add library="comctl32" />
 			<Add library="C:/Users/frank/Desktop/Nuevo/Proyecto/libwinmm-1.a" />
-			<Add directory="../Sonido/SDL2-2.30.8/x86_64-w64-mingw32/include/SDL2" />
+			<Add library="sfml-audio" />
+			<Add library="sfml-graphics" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
+			<Add directory="SFML/lib" />
 		</Linker>
+		<Unit filename="Cabeceras/Recargador.h" />
+		<Unit filename="Cabeceras/enemy.h" />
+		<Unit filename="Cabeceras/game.h" />
+		<Unit filename="Cabeceras/miniwin.h" />
+		<Unit filename="Cabeceras/player.h" />
 		<Unit filename="Fondo/nivel_1.jpg" />
 		<Unit filename="Fondo/nivel_2.jpg" />
 		<Unit filename="Fondo/nivel_3.jpg" />
-		<Unit filename="Recargador.h" />
-		<Unit filename="enemy.cpp" />
-		<Unit filename="enemy.h" />
-		<Unit filename="game.cpp" />
-		<Unit filename="game.h" />
-		<Unit filename="main.cpp" />
-		<Unit filename="miniwin.cpp" />
-		<Unit filename="miniwin.h" />
-		<Unit filename="player.cpp" />
-		<Unit filename="player.h" />
-		<Unit filename="recargador.cpp" />
+		<Unit filename="Sonidos/Nivel_1.wav" />
+		<Unit filename="Sonidos/Nivel_2.wav" />
+		<Unit filename="Sonidos/Nivel_3.wav" />
+		<Unit filename="Sonidos/Sonido.wav" />
+		<Unit filename="Sonidos/explosion.wav" />
+		<Unit filename="Sonidos/game_over.wav" />
+		<Unit filename="Sonidos/sonido_enemigo.wav" />
+		<Unit filename="Src/enemy.cpp" />
+		<Unit filename="Src/game.cpp" />
+		<Unit filename="Src/main.cpp" />
+		<Unit filename="Src/miniwin.cpp" />
+		<Unit filename="Src/player.cpp" />
+		<Unit filename="Src/recargador.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

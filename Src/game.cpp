@@ -1,8 +1,10 @@
-#include "game.h"
+#include "../Cabeceras/game.h"
 #include <windows.h>
-#include "miniwin.h"
+#include "../Cabeceras/miniwin.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 using namespace miniwin;
@@ -25,7 +27,7 @@ game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), ba
 game::~game() {
     Mix_HaltMusic();
     Mix_CloseAudio();
-    SDL_Quit(); // Aseg˙rate de cerrar SDL
+    SDL_Quit(); // AsegÓÄ≤ate de cerrar SDL
 }
 
 void game::iniciar() {
@@ -36,9 +38,9 @@ void game::iniciar() {
 const int game::maxBalasPorNivel[3] = {10, 15, 20};
 
 const vector<string> game::sonidosDeFondo =  {
-    "Nivel_1.wav",
-    "Nivel_2.wav",
-    "Nivel_3.wav"
+    "C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/Nivel_1.wav",
+    "C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/Nivel_2.wav",
+    "C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/Nivel_3.wav"
 };
 
 void game::mostrarPantallaInicio() {
@@ -92,7 +94,7 @@ void game::manejarEntradas() {
             balaX = player.getX() + 40;
             balaY = player.getY();
             balasRestantes--;
-            reproducirEfecto("Sonido.wav");
+            reproducirEfecto("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/Sonido.wav");
         }
     }
 }
@@ -111,7 +113,7 @@ void game::actualizar() {
 
         if (rand() % 100 < 5) {
             enemigo.disparar();
-            reproducirEfecto("sonido_enemigo.wav");
+            reproducirEfecto("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/sonido_enemigo.wav");
         }
 
         if (enemigo.disparoEnemigoActivo) {
@@ -160,7 +162,7 @@ void game::verificarColisionRecargadores() {
         if (it->isVisible() &&
             it->colisionaCon(player.getX(), player.getY(), player.getAncho(), player.getAlto())) {
             balasRestantes += 2;
-            it->desactivar();  // Desactivar recargador despuÈs de colisiÛn
+            it->desactivar();  // Desactivar recargador despuÂª• de colisiÈèÆ
             recargadoresGenerados--;
             it = recargadores.erase(it); // Elimina el recargador de la lista
         } else {
@@ -177,7 +179,7 @@ void game::dibujarBarraVida() {
     rectangulo_lleno(700, 550, 700 + (100 * vida / 5), 560);
 }
 
-// MÈtodo para verificar si dos rect·ngulos colisionan
+// MÂΩãodo para verificar si dos rectÂ´ïgulos colisionan
 bool game::colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2) {
     return (x1 < x2 + ancho2 && x1 + ancho1 > x2 &&
             y1 < y2 + alto2 && y1 + alto1 > y2);
@@ -195,35 +197,35 @@ void game::verificarColisiones() {
 
             // Si la vida llega a 0, termina el juego
             if (vida <= 0) {
-                reproducirEfecto("explosion.wav");
+                reproducirEfecto("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/explosion.wav");
                 juegoActivo = false;
                 enemigos.clear();
                 return;
             }
         }
 
-        // Verificar colisiÛn entre la bala enemiga y el jugador
+        // Verificar colisiÈèÆ entre la bala enemiga y el jugador
         if (enemigo.disparoEnemigoActivo) {
             if (colision(player.getX(), player.getY(),
                          player.getAncho(), player.getAlto(),
                          enemigo.balaEnemigaX, enemigo.balaEnemigaY, 4, 10)) {
                 vida--;
 
-                // Revisa si la vida llega a 0 despuÈs de recibir el disparo
+                // Revisa si la vida llega a 0 despuÂª• de recibir el disparo
                 if (vida <= 0) {
-                    reproducirEfecto("explosion.wav");
+                    reproducirEfecto("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/explosion.wav");
                     juegoActivo = false;
                     enemigos.clear();
                     return;
                 }
 
-                reproducirEfecto("explosion.wav");
+                reproducirEfecto("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/explosion.wav");
                 enemigo.disparoEnemigoActivo = false;
             }
         }
     }
 
-    // Verificar colisiÛn de la bala del jugador con los enemigos
+    // Verificar colisiÈèÆ de la bala del jugador con los enemigos
     for (size_t i = 0; i < enemigos.size(); ++i) {
         enemy& enemigo = enemigos[i];
 
@@ -235,7 +237,7 @@ void game::verificarColisiones() {
             disparo = false;
             enemigos.erase(enemigos.begin() + i);
             score += 10;
-            reproducirEfecto("explosion.wav");
+            reproducirEfecto("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/explosion.wav");
             cont++;
             break;
         }
@@ -267,7 +269,7 @@ void game::verificarColisiones() {
             borra();
             color(ROJO);
             recargadores.clear();
-            const char* mensaje = "°GANASTE LA PARTIDA!";
+            const char* mensaje = "GANASTE LA PARTIDA!";
             int anchoTexto = strlen(mensaje) * 8;
             int altoTexto = 15;
 
@@ -283,15 +285,15 @@ void game::verificarColisiones() {
 }
 
 void game::reproducirMusicaFondo(int nivel) {
-    // Libera la m˙sica anterior si hay alguna en reproducciÛn
+    // Libera la mÓÄ≥ica anterior si hay alguna en reproducciÈèÆ
     Mix_HaltMusic();
 
-    // Carga y reproduce la m˙sica de fondo del nivel actual
+    // Carga y reproduce la mÓÄ≥ica de fondo del nivel actual
     Mix_Music* musica = Mix_LoadMUS(sonidosDeFondo[nivel - 1].c_str());
     if (musica) {
         Mix_PlayMusic(musica, -1);  // -1 para reproducir en loop
     } else {
-        cerr << "Error al cargar la m˙sica de fondo: " << Mix_GetError() << endl;
+        cerr << "Error al cargar la mÓÄ≥ica de fondo: " << Mix_GetError() << endl;
     }
 }
 
@@ -346,7 +348,7 @@ void game::cargarNivel() {
 void game::datos(int x, int y) {
     color(ROJO);
 
-    const char* mensaje = "Joaquin MuÒoz";
+    const char* mensaje = "Joaquin Mu√±oz";
     int anchoTexto = strlen(mensaje) * 8;
 
     int posX = x + (player.getAncho() - anchoTexto) / 2;
@@ -415,4 +417,3 @@ void game::dibujar() {
 
     refresca();
 }
-

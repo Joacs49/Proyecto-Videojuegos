@@ -1,5 +1,5 @@
-#include "player.h"
-#include "miniwin.h"
+#include "../Cabeceras/player.h"
+#include "../Cabeceras/miniwin.h"
 #include <windows.h>
 
 using namespace miniwin;

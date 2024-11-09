@@ -1,5 +1,5 @@
-#include "enemy.h"
-#include "miniwin.h"
+#include "../Cabeceras/enemy.h"
+#include "../Cabeceras/miniwin.h"
 
 using namespace miniwin;
 using namespace std;

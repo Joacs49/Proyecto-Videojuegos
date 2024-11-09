@@ -1,5 +1,5 @@
-#include "recargador.h"
-#include "miniwin.h"
+#include "../Cabeceras/recargador.h"
+#include "../Cabeceras/miniwin.h"
 
 using namespace miniwin;
 
