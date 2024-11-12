@@ -11,6 +11,7 @@
 #include "recargador.h"
 
 using namespace std;
+using namespace sf;
 
 class game {
 public:
@@ -25,14 +26,14 @@ public:
     void dibujar();
     void datos(int v, int z);
 
-    static const std::vector<std::string> sonidosDeFondo;
-    static const std::map<std::string, std::string> fondosDeNivel;
-    static const std::map<std::string, std::string> sonidosEfectos;
+    static const vector<string> sonidosDeFondo;
+    static const map<string, string> fondosDeNivel;
+    static const map<string, string> sonidosEfectos;
 
     vector<Recargador> recargadores;
     void dibujarBarraVida();
     void renderizarFondo();
-    sf::Font font;
+    Font font;
     float velocidadEnemigos = 1.0f;
 
 private:
@@ -47,21 +48,21 @@ private:
     int balasRestantes;
     int recargadoresGenerados;
 
-    sf::Texture fondoTexture;
-    sf::Sprite fondoSprite;
-    sf::Music musicaFondo;
-    sf::RenderWindow renderWindow;
-    sf::Texture textura;
-    std::map<std::string, sf::Texture> texturas;
-    std::map<std::string, sf::SoundBuffer> sonidos;
-    sf::Sound efectoSonido;
-    sf::Clock reloj;
-    std::map<std::string, sf::SoundBuffer> buffers;
-    sf::Sound sonidoEfecto;
+    Texture fondoTexture;
+    Sprite fondoSprite;
+    Music musicaFondo;
+    RenderWindow renderWindow;
+    Texture textura;
+    map<string, Texture> texturas;
+    map<string, SoundBuffer> sonidos;
+    Sound efectoSonido;
+    Clock reloj;
+    map<string, SoundBuffer> buffers;
+    Sound sonidoEfecto;
 
-    std::map<std::string, sf::SoundBuffer> buffersSonido;
-    std::map<std::string, sf::Sound> efectosSonido;
-    std::vector<sf::Sound> sonidosEnEjecucion;
+    map<string, SoundBuffer> buffersSonido;
+    map<string, Sound> efectosSonido;
+    vector<Sound> sonidosEnEjecucion;
 
     unsigned long tiempoRecargador1, tiempoRecargador2;
     int tiempoRecargador;
@@ -73,12 +74,12 @@ private:
     void verificarColisionRecargadores();
     void mostrarPantallaInicio();
     void reproducirMusicaFondo(int nivel);
-    void reproducirEfecto(sf::Sound& efecto);
+    void reproducirEfecto(Sound& efecto);
     void cargarRecursos();
-    void configurarTexto(sf::Text& texto, const std::string& contenido, int tamano, const sf::Color& color, const sf::Vector2f& posicion);
-    sf::Vector2f calcularCentroTexto(const std::string& texto, int tamano);
+    void configurarTexto(Text& texto, const string& contenido, int tamano, const Color& color, const Vector2f& posicion);
+    Vector2f calcularCentroTexto(const string& texto, int tamano);
     void detenerMusica();
-    void reiniciarReloj();
+
 };
 
 #endif

@@ -1,20 +1,22 @@
 #include "../Cabeceras/Recargador.h"
 
+using namespace sf;
+
 Recargador::Recargador(int xPos, int yPos) : x(xPos), y(yPos), visible(true) {}
 
-void Recargador::dibujar(sf::RenderWindow& window) {
+void Recargador::dibujar(RenderWindow& window) {
     if (visible) {
-        sf::RectangleShape recargador(sf::Vector2f(20, 20));
+        RectangleShape recargador(Vector2f(20, 20));
         recargador.setPosition(x, y);
-        recargador.setFillColor(sf::Color::Green);
+        recargador.setFillColor(Color::Green);
 
         window.draw(recargador);
 
-        sf::Font font;
+        Font font;
         if (font.loadFromFile("C:/Users/frank/Desktop/Nuevo/Proyecto/fonts/arial.ttf")) {
-            sf::Text texto("+", font, 20);
+            Text texto("+", font, 20);
             texto.setPosition(x + 5, y - 3);
-            texto.setFillColor(sf::Color::Black);
+            texto.setFillColor(Color::Black);
             window.draw(texto);
         }
     }

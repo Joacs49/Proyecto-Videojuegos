@@ -4,15 +4,16 @@
 #include <iostream>
 
 using namespace std;
+using namespace sf;
 
-sf::SoundBuffer bufferDisparoJugador;
-sf::SoundBuffer bufferDisparoEnemigo;
-sf::SoundBuffer bufferExplosion;
-sf::Sound sonidoDisparoJugador;
-sf::Sound sonidoDisparoEnemigo;
-sf::Sound sonidoExplosion;
-sf::Music musicaFondo;
-sf::Font font;
+SoundBuffer bufferDisparoJugador;
+SoundBuffer bufferDisparoEnemigo;
+SoundBuffer bufferExplosion;
+Sound sonidoDisparoJugador;
+Sound sonidoDisparoEnemigo;
+Sound sonidoExplosion;
+Music musicaFondo;
+Font font;
 
 game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1),
             balasRestantes(maxBalasPorNivel[0]), tiempoRecargador1(0), tiempoRecargador2(0), recargadoresGenerados(0),
@@ -45,7 +46,7 @@ void game::iniciar() {
 }
 
 void game::renderizarFondo() {
-    std::string claveFondo = "nivel_" + std::to_string(nivelActual);
+    string claveFondo = "nivel_" + to_string(nivelActual);
     if (texturas.find(claveFondo) != texturas.end()) {
         fondoSprite.setTexture(texturas[claveFondo]);
 
@@ -55,7 +56,7 @@ void game::renderizarFondo() {
             renderWindow.getSize().y / fondoSprite.getLocalBounds().height
         );
     } else {
-        std::cerr << "No se encontró la textura para el nivel " << nivelActual << std::endl;
+        cerr << "No se encontró la textura para el nivel " << nivelActual << endl;
         return;
     }
 
@@ -70,20 +71,20 @@ const vector<string> game::sonidosDeFondo =  {
     "C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/Nivel_3.wav"
 };
 
-const std::map<std::string, std::string> game::fondosDeNivel = {
+const map<string, string> game::fondosDeNivel = {
     {"nivel_1", "C:/Users/frank/Desktop/Nuevo/Proyecto/Fondo/nivel_1.jpg"},
     {"nivel_2", "C:/Users/frank/Desktop/Nuevo/Proyecto/Fondo/nivel_2.jpg"},
     {"nivel_3", "C:/Users/frank/Desktop/Nuevo/Proyecto/Fondo/nivel_3.jpg"}
 };
 
 void game::mostrarPantallaInicio() {
-    sf::Font font;
+    Font font;
     if (!font.loadFromFile("C:/Users/frank/Desktop/Nuevo/Proyecto/fonts/arial.ttf")) {
         cerr << "Error al cargar la fuente" << endl;
         return;
     }
 
-    sf::Text mensaje("Presiona ESPACIO para iniciar el juego", font, 20);
+    Text mensaje("Presiona ESPACIO para iniciar el juego", font, 20);
     mensaje.setFillColor(sf::Color::Red);
     mensaje.setPosition(
         (800 - mensaje.getLocalBounds().width) / 2,
@@ -91,12 +92,12 @@ void game::mostrarPantallaInicio() {
     );
 
     while (renderWindow.isOpen()) {
-        sf::Event event;
+        Event event;
         while (renderWindow.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 renderWindow.close();
                 return;
-            } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
+            } else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Space) {
                 return;
             }
         }
@@ -108,9 +109,9 @@ void game::mostrarPantallaInicio() {
 }
 
 void game::loop() {
-    sf::Clock clock;
+    Clock clock;
     while (renderWindow.isOpen() && juegoActivo) {
-        sf::Time elapsed = clock.restart();
+        Time elapsed = clock.restart();
 
         manejarEntradas();
         actualizar();
@@ -123,15 +124,15 @@ void game::loop() {
 }
 
 void game::manejarEntradas() {
-    sf::Event event;
+    Event event;
     while (renderWindow.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             juegoActivo = false;
             renderWindow.close();
-        } else if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Escape) {
+        } else if (event.type == Event::KeyPressed) {
+            if (event.key.code == Keyboard::Escape) {
                 exit(0);
-            } else if (event.key.code == sf::Keyboard::Space && !disparo && balasRestantes > 0) {
+            } else if (event.key.code == Keyboard::Space && !disparo && balasRestantes > 0) {
                 disparo = true;
                 balaX = player.getX() + 40;
                 balaY = player.getY();
@@ -215,14 +216,14 @@ void game::verificarColisionRecargadores() {
 }
 
 void game::dibujarBarraVida() {
-    sf::RectangleShape fondoBarra(sf::Vector2f(100, 10));
+    RectangleShape fondoBarra(Vector2f(100, 10));
     fondoBarra.setPosition(700, 550);
-    fondoBarra.setFillColor(sf::Color(255, 0, 0));
+    fondoBarra.setFillColor(Color(255, 0, 0));
 
     float anchoVida = 100.0f * vida / 5.0f;
-    sf::RectangleShape barraVida(sf::Vector2f(anchoVida, 10));
+    RectangleShape barraVida(Vector2f(anchoVida, 10));
     barraVida.setPosition(700, 550);
-    barraVida.setFillColor(sf::Color(0, 255, 0));
+    barraVida.setFillColor(Color(0, 255, 0));
 
     renderWindow.draw(fondoBarra);
     renderWindow.draw(barraVida);
@@ -247,14 +248,14 @@ void game::verificarColisiones() {
             // Si la vida llega a 0, termina el juego
             if (vida <= 0) {
                 reproducirEfecto(sonidoExplosion);
-                sf::Text texto;
+                Text texto;
                 texto.setFont(font);
                 texto.setString("PERDISTE :(");
                 texto.setCharacterSize(20);
-                texto.setFillColor(sf::Color::Red);
-                texto.setStyle(sf::Text::Bold);
+                texto.setFillColor(Color::Red);
+                texto.setStyle(Text::Bold);
 
-                sf::FloatRect textoBounds = texto.getLocalBounds();
+                FloatRect textoBounds = texto.getLocalBounds();
                 texto.setPosition(
                     (800 - textoBounds.width) / 2,
                     (600 - textoBounds.height) / 2
@@ -264,7 +265,7 @@ void game::verificarColisiones() {
                 renderWindow.draw(texto);
                 renderWindow.display();
 
-                sf::sleep(sf::milliseconds(2000));
+                sleep(milliseconds(2000));
 
                 juegoActivo = false;
 
@@ -283,14 +284,14 @@ void game::verificarColisiones() {
                 // Revisa si la vida llega a 0 despues de recibir el disparo
                 if (vida <= 0) {
                     reproducirEfecto(sonidoExplosion);
-                    sf::Text texto;
+                    Text texto;
                     texto.setFont(font);
                     texto.setString("PERDISTE :(");
                     texto.setCharacterSize(20);
-                    texto.setFillColor(sf::Color::Red);
-                    texto.setStyle(sf::Text::Bold);
+                    texto.setFillColor(Color::Red);
+                    texto.setStyle(Text::Bold);
 
-                    sf::FloatRect textoBounds = texto.getLocalBounds();
+                    FloatRect textoBounds = texto.getLocalBounds();
                     texto.setPosition(
                         (800 - textoBounds.width) / 2,
                         (600 - textoBounds.height) / 2
@@ -300,7 +301,7 @@ void game::verificarColisiones() {
                     renderWindow.draw(texto);
                     renderWindow.display();
 
-                    sf::sleep(sf::milliseconds(2000));
+                    sleep(milliseconds(2000));
 
                     juegoActivo = false;
 
@@ -334,18 +335,18 @@ void game::verificarColisiones() {
         if (juegoActivo && enemigos.empty()) {
         if (nivelActual < 3) {
             recargadores.clear();
-            renderWindow.clear(sf::Color::Black);
+            renderWindow.clear(Color::Black);
 
 
-            sf::Text texto;
+            Text texto;
             texto.setFont(font);
             texto.setString("Nivel " + std::to_string(nivelActual) + " Completo!");
             texto.setCharacterSize(20);
-            texto.setFillColor(sf::Color::Red);
-            texto.setStyle(sf::Text::Bold);
+            texto.setFillColor(Color::Red);
+            texto.setStyle(Text::Bold);
 
             // Centrar texto
-            sf::FloatRect textoBounds = texto.getLocalBounds();
+            FloatRect textoBounds = texto.getLocalBounds();
             texto.setPosition(
                 (800 - textoBounds.width) / 2,
                 (600 - textoBounds.height) / 2
@@ -359,20 +360,20 @@ void game::verificarColisiones() {
             balasRestantes = maxBalasPorNivel[nivelActual - 1];
             cargarNivel();
 
-            sf::sleep(sf::milliseconds(2000));
+            sleep(milliseconds(2000));
         } else {
-            renderWindow.clear(sf::Color::Black);
+            renderWindow.clear(Color::Black);
 
             // Configuración de texto
-            sf::Text texto;
+            Text texto;
             texto.setFont(font);
             texto.setString("GANASTE LA PARTIDA!");
             texto.setCharacterSize(20);
-            texto.setFillColor(sf::Color::Red);
-            texto.setStyle(sf::Text::Bold);
+            texto.setFillColor(Color::Red);
+            texto.setStyle(Text::Bold);
 
             // Centrar texto
-            sf::FloatRect textoBounds = texto.getLocalBounds();
+            FloatRect textoBounds = texto.getLocalBounds();
             texto.setPosition(
                 (800 - textoBounds.width) / 2,
                 (600 - textoBounds.height) / 2
@@ -382,7 +383,7 @@ void game::verificarColisiones() {
             renderWindow.draw(texto);
             renderWindow.display();
 
-            sf::sleep(sf::milliseconds(2000));
+            sleep(milliseconds(2000));
             juegoActivo = false;
         }
     }
@@ -391,25 +392,25 @@ void game::verificarColisiones() {
 
 void game::cargarRecursos() {
     for (const auto& par : fondosDeNivel) {
-        const std::string& clave = par.first;
-        const std::string& rutaFondo = par.second;
+        const string& clave = par.first;
+        const string& rutaFondo = par.second;
 
-        sf::Texture fondoTexture;
+        Texture fondoTexture;
         if (!fondoTexture.loadFromFile(rutaFondo)) {
-            std::cerr << "Error al cargar el fondo: " << rutaFondo << std::endl;
+            cerr << "Error al cargar el fondo: " << rutaFondo << endl;
         } else {
             texturas[clave] = fondoTexture;
-            std::cout << "Fondo cargado con clave: " << clave << " desde " << rutaFondo << std::endl;
+            cout << "Fondo cargado con clave: " << clave << " desde " << rutaFondo << endl;
         }
     }
 }
 
-void game::reproducirEfecto(sf::Sound& efecto) {
+void game::reproducirEfecto(Sound& efecto) {
     efecto.play();
 }
 
 void game::reproducirMusicaFondo(int nivel) {
-    if (musicaFondo.getStatus() == sf::Music::Playing) {
+    if (musicaFondo.getStatus() == Music::Playing) {
         musicaFondo.stop();
     }
 
@@ -430,19 +431,19 @@ void game::cargarNivel() {
     tiempoRecargador1 = 0;
     tiempoRecargador2 = 0;
 
-    std::string claveNivel = "nivel_" + std::to_string(nivelActual);
-    std::cout << "Buscando fondo con clave: " << claveNivel << std::endl;
+    string claveNivel = "nivel_" + to_string(nivelActual);
+    cout << "Buscando fondo con clave: " << claveNivel << endl;
 
     if (texturas.find(claveNivel) != texturas.end()) {
         fondoSprite.setTexture(texturas[claveNivel]);
-        std::cout << "Fondo cargado para: " << claveNivel << std::endl;
+        cout << "Fondo cargado para: " << claveNivel << endl;
     } else {
         if (fondoTexture.loadFromFile(fondosDeNivel.at(claveNivel))) {
             fondoSprite.setTexture(fondoTexture);
             texturas[claveNivel] = fondoTexture;
-            std::cout << "Fondo cargado desde archivo para: " << claveNivel << std::endl;
+            cout << "Fondo cargado desde archivo para: " << claveNivel << endl;
         } else {
-            std::cerr << "No se pudo cargar el fondo para el nivel " << claveNivel << std::endl;
+            cerr << "No se pudo cargar el fondo para el nivel " << claveNivel << endl;
         }
     }
 
@@ -458,7 +459,7 @@ void game::cargarNivel() {
     }
 
     // Define posiciones fijas para los enemigos
-    std::vector<std::pair<int, int>> posiciones = {
+    vector<pair<int, int>> posiciones = {
         {100, 30}, {200, 100}, {300, 170}, {400, 240}, {500, 310}, {600, 380}
     };
 
@@ -477,13 +478,13 @@ void game::cargarNivel() {
 }
 
 void game::datos(int x, int y) {
-    sf::Text texto;
+    Text texto;
     texto.setFont(font);
     texto.setString("Joaquin Muñoz");
     texto.setCharacterSize(16);
-    texto.setFillColor(sf::Color::Red);
+    texto.setFillColor(Color::Red);
 
-    sf::FloatRect textoBounds = texto.getLocalBounds();
+    FloatRect textoBounds = texto.getLocalBounds();
     int posX = x + (player.getAncho() - textoBounds.width) / 2;
     int posY = y + player.getAlto() + 5;
     texto.setPosition(posX, posY);
@@ -491,7 +492,7 @@ void game::datos(int x, int y) {
     renderWindow.draw(texto);
 }
 
-void game::configurarTexto(sf::Text& texto, const std::string& contenido, int tamano, const sf::Color& color, const sf::Vector2f& posicion) {
+void game::configurarTexto(sf::Text& texto, const string& contenido, int tamano, const Color& color, const Vector2f& posicion) {
     texto.setFont(font);
     texto.setString(contenido);
     texto.setCharacterSize(tamano);
@@ -499,14 +500,14 @@ void game::configurarTexto(sf::Text& texto, const std::string& contenido, int ta
     texto.setPosition(posicion);
 }
 
-sf::Vector2f game::calcularCentroTexto(const std::string& texto, int tamano) {
-    sf::Text tempText;
+sf::Vector2f game::calcularCentroTexto(const string& texto, int tamano) {
+    Text tempText;
     tempText.setFont(font);
     tempText.setString(texto);
     tempText.setCharacterSize(tamano);
-    sf::FloatRect bounds = tempText.getLocalBounds();
+    FloatRect bounds = tempText.getLocalBounds();
 
-    return sf::Vector2f((800 - bounds.width) / 2, (600 - bounds.height) / 2);
+    return Vector2f((800 - bounds.width) / 2, (600 - bounds.height) / 2);
 }
 
 void game::dibujar() {
@@ -517,18 +518,18 @@ void game::dibujar() {
     if (juegoActivo) {
         player.dibujar(renderWindow);
 
-        sf::Text scoreText;
-        configurarTexto(scoreText, "Score: " + std::to_string(score), 16, sf::Color::Red, {10, 580});
+        Text scoreText;
+        configurarTexto(scoreText, "Score: " + to_string(score), 16, Color::Red, {10, 580});
         renderWindow.draw(scoreText);
 
-        sf::Text nivelText;
-        configurarTexto(nivelText, "Nivel: " + std::to_string(nivelActual), 16, sf::Color::Red, {10, 560});
+        Text nivelText;
+        configurarTexto(nivelText, "Nivel: " + to_string(nivelActual), 16, Color::Red, {10, 560});
         renderWindow.draw(nivelText);
 
         dibujarBarraVida();
 
-        sf::Text balasText;
-        configurarTexto(balasText, "Balas: x" + std::to_string(balasRestantes), 16, sf::Color::Red, {700, 530});
+        Text balasText;
+        configurarTexto(balasText, "Balas: x" + to_string(balasRestantes), 16, Color::Red, {700, 530});
         renderWindow.draw(balasText);
     }
 
@@ -536,17 +537,17 @@ void game::dibujar() {
         enemigo.dibujar(renderWindow);
 
         if (enemigo.disparoEnemigoActivo) {
-            sf::RectangleShape balaEnemiga(sf::Vector2f(4, 10));
+            RectangleShape balaEnemiga(Vector2f(4, 10));
             balaEnemiga.setPosition(enemigo.balaEnemigaX, enemigo.balaEnemigaY);
-            balaEnemiga.setFillColor(sf::Color(255, 0, 0));
+            balaEnemiga.setFillColor(Color(255, 0, 0));
             renderWindow.draw(balaEnemiga);
         }
     }
 
     if (disparo) {
-        sf::RectangleShape bala(sf::Vector2f(4, 10));
+        RectangleShape bala(Vector2f(4, 10));
         bala.setPosition(balaX, balaY);
-        bala.setFillColor(sf::Color(255, 242, 0));
+        bala.setFillColor(Color(255, 242, 0));
         renderWindow.draw(bala);
     }
 
@@ -559,14 +560,14 @@ void game::dibujar() {
     if (!juegoActivo) {
         recargadores.clear();
 
-        sf::Text mensaje;
-        configurarTexto(mensaje, "FIN DEL JUEGO", 20, sf::Color::Red, calcularCentroTexto("FIN DEL JUEGO", 20));
+        Text mensaje;
+        configurarTexto(mensaje, "FIN DEL JUEGO", 20, Color::Red, calcularCentroTexto("FIN DEL JUEGO", 20));
 
         renderWindow.clear();
         renderWindow.draw(mensaje);
         renderWindow.display();
 
-        sf::sleep(sf::seconds(1));
+        sleep(seconds(1));
 
         juegoActivo = false;
     }

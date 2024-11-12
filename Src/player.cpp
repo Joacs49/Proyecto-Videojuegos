@@ -4,51 +4,54 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+using namespace sf;
+
 constexpr int escalado = 2;
 
 player::player(int x, int y) : offsetX(x), offsetY(y) {
     colorMap = {
-        {"color_1", sf::Color(3, 2, 2)},
-        {"color_2", sf::Color(46, 46, 46)},
-        {"color_3", sf::Color(93, 94, 96)},
-        {"color_4", sf::Color(104, 21, 23)},
-        {"color_5", sf::Color(223, 43, 47)},
-        {"color_6", sf::Color(27, 44, 80)},
-        {"color_7", sf::Color(15, 53, 109)},
-        {"color_8", sf::Color(224, 225, 227)},
-        {"color_9", sf::Color(255, 253, 254)},
+        {"color_1", Color(3, 2, 2)},
+        {"color_2", Color(46, 46, 46)},
+        {"color_3", Color(93, 94, 96)},
+        {"color_4", Color(104, 21, 23)},
+        {"color_5", Color(223, 43, 47)},
+        {"color_6", Color(27, 44, 80)},
+        {"color_7", Color(15, 53, 109)},
+        {"color_8", Color(224, 225, 227)},
+        {"color_9", Color(255, 253, 254)},
     };
 }
 
 void player::mover() {
     const int VELOCIDAD = 1;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    if (Keyboard::isKeyPressed(Keyboard::Left)) {
         if (offsetX > 0) offsetX -= VELOCIDAD;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    if (Keyboard::isKeyPressed(Keyboard::Right)) {
         if (offsetX < 800 - ANCHO_NAVE) offsetX += VELOCIDAD;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    if (Keyboard::isKeyPressed(Keyboard::Up)) {
             if (offsetY > 0) offsetY -= VELOCIDAD;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (Keyboard::isKeyPressed(Keyboard::Down)) {
             if (offsetY < 600 - ALTO_NAVE) offsetY += VELOCIDAD;
     }
 }
 
-void player::dibujaCuadrado(int a, int b, const std::string& colorRelleno, sf::RenderWindow& window) {
+void player::dibujaCuadrado(int a, int b, const string& colorRelleno, RenderWindow& window) {
     const int x = a * escalado + offsetX;
     const int y = b * escalado + offsetY;
 
-    sf::RectangleShape rect(sf::Vector2f(escalado, escalado));
+    RectangleShape rect(Vector2f(escalado, escalado));
     rect.setPosition(x, y);
     rect.setFillColor(colorMap[colorRelleno]);
 
     window.draw(rect);
 }
 
-void player::dibujaFila(int fila, const std::vector<std::string>& colores, sf::RenderWindow& window) {
+void player::dibujaFila(int fila, const vector<string>& colores, RenderWindow& window) {
     for (size_t i = 0; i < colores.size(); ++i) {
         if (!colores[i].empty()) {
             dibujaCuadrado(i, fila, colores[i], window);
@@ -61,7 +64,7 @@ void player::setPosicion(int x, int y) {
     offsetY = y;
 }
 
-void player::dibujar(sf::RenderWindow& window) {
+void player::dibujar(RenderWindow& window) {
     dibujaFila(0, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
     dibujaFila(1, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
     dibujaFila(2, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);

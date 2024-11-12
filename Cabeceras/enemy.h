@@ -8,18 +8,19 @@
 #include <ctime>
 
 using namespace std;
+using namespace sf;
 
 class enemy {
 public:
     enemy(int x, int y, float vel);
     void mover();
-    void dibujar(sf::RenderWindow& window);
+    void dibujar(RenderWindow& window);
 
-    void disparar(sf::RenderWindow& window);
+    void disparar(RenderWindow& window);
 
     int getX() const { return xPos; };
     int getY() const { return yPos; }
-    void setColor(const std::string& color, sf::RectangleShape& shape);
+    void setColor(const string& color, RectangleShape& shape);
 
     int getAncho() const { return ancho; }
     int getAlto() const { return alto; }
@@ -30,15 +31,15 @@ public:
 
 private:
     int xPos, yPos;
+    float velocidad;
     int direccion;
     int contadorMovimientos;
     int ancho = 60;
     int alto = 30;
-    float velocidad;
-    void dibujaCuadrado(int a, int b, const std::string& colorRelleno, sf::RenderWindow& window);
-    void dibujaFila(int fila, const std::vector<std::string>& colores, sf::RenderWindow& window);
-    map<string, sf::Color> colorMap;
-    void mueveYDibuja(sf::RenderWindow& window);
+    void dibujaCuadrado(int a, int b, const string& colorRelleno, RenderWindow& window);
+    void dibujaFila(int fila, const vector<string>& colores, RenderWindow& window);
+    map<string, Color> colorMap;
+    void mueveYDibuja(RenderWindow& window);
 };
 
 #endif

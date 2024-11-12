@@ -8,6 +8,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace sf;
 
 const int escalado = 2;
 const bool pintarBorde = false;
@@ -18,21 +19,21 @@ enemy::enemy(int x, int y, float vel)
     : xPos(x), yPos(y), velocidad(vel), direccion(1), contadorMovimientos(0) {
     srand(static_cast<unsigned>(time(nullptr)));
 
-    colorMap = std::map<std::string, sf::Color>({
-        {"color_1", sf::Color(0, 0, 0)},
-        {"color_2", sf::Color(157, 22, 22)},
-        {"color_3", sf::Color(0, 41, 255)},
-        {"color_4", sf::Color(142, 180, 231)},
-        {"color_5", sf::Color(255, 255, 255)},
-        {"color_6", sf::Color(0, 86, 255)},
-        {"color_7", sf::Color(187, 187, 187)},
-        {"color_8", sf::Color(158, 158, 158)},
-        {"color_9", sf::Color(96, 96, 96)},
-        {"color_10", sf::Color(81, 81, 81)}
+    colorMap = map<string, Color>({
+        {"color_1", Color(0, 0, 0)},
+        {"color_2", Color(157, 22, 22)},
+        {"color_3", Color(0, 41, 255)},
+        {"color_4", Color(142, 180, 231)},
+        {"color_5", Color(255, 255, 255)},
+        {"color_6", Color(0, 86, 255)},
+        {"color_7", Color(187, 187, 187)},
+        {"color_8", Color(158, 158, 158)},
+        {"color_9", Color(96, 96, 96)},
+        {"color_10", Color(81, 81, 81)}
     });
 }
 
-void enemy::setColor(const std::string& color, sf::RectangleShape& shape) {
+void enemy::setColor(const string& color, RectangleShape& shape) {
     if (colorMap.find(color) != colorMap.end()) {
         shape.setFillColor(colorMap[color]);
     }
@@ -55,8 +56,8 @@ void enemy::mover() {
 }
 
 
-void enemy::dibujaCuadrado(int a, int b, const std::string& colorRelleno, sf::RenderWindow& window) {
-    sf::RectangleShape square(sf::Vector2f(escalado, escalado));
+void enemy::dibujaCuadrado(int a, int b, const string& colorRelleno, RenderWindow& window) {
+    RectangleShape square(Vector2f(escalado, escalado));
     const int x = a * escalado + xPos;
     const int y = b * escalado + yPos;
 
@@ -67,12 +68,12 @@ void enemy::dibujaCuadrado(int a, int b, const std::string& colorRelleno, sf::Re
 
     if (pintarBorde) {
         square.setOutlineThickness(1);
-        square.setOutlineColor(sf::Color(100, 100, 100));
+        square.setOutlineColor(Color(100, 100, 100));
         window.draw(square);
     }
 }
 
-void enemy::dibujaFila(int fila, const std::vector<std::string>& colores, sf::RenderWindow& window) {
+void enemy::dibujaFila(int fila, const vector<string>& colores, RenderWindow& window) {
     for (size_t i = 0; i < colores.size(); ++i) {
         if (!colores[i].empty()) {
             dibujaCuadrado(i, fila, colores[i], window);
@@ -111,7 +112,7 @@ void enemy::dibujar(sf::RenderWindow& window) {
     dibujaFila(27, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
 }
 
-void enemy::disparar(sf::RenderWindow& window) {
+void enemy::disparar(RenderWindow& window) {
     static int velocidadDisparo = 1;
     static int contadorVelocidad = 0;
     static int tiempoEntreDisparos = 15;
@@ -132,8 +133,8 @@ void enemy::disparar(sf::RenderWindow& window) {
             contadorVelocidad++;
         }
 
-        sf::RectangleShape bala(sf::Vector2f(5, 10));
-        bala.setFillColor(sf::Color::Red);
+        RectangleShape bala(Vector2f(5, 10));
+        bala.setFillColor(Color::Red);
         bala.setPosition(balaEnemigaX, balaEnemigaY);
         window.draw(bala);
 
@@ -146,7 +147,7 @@ void enemy::disparar(sf::RenderWindow& window) {
 }
 
 
-void enemy::mueveYDibuja(sf::RenderWindow& window) {
+void enemy::mueveYDibuja(RenderWindow& window) {
     mover();
     dibujar(window);
 }
