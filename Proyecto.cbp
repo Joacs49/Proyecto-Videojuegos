@@ -15,10 +15,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="sfml-audio" />
-					<Add library="sfml-graphics" />
-					<Add library="sfml-window" />
-					<Add library="sfml-system" />
+					<Add directory="bin" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -28,7 +25,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -41,21 +37,20 @@
 			<Add directory="SFML/include" />
 		</Compiler>
 		<Linker>
+			<Add option="-lsfml-audio" />
+			<Add option="-lsfml-graphics" />
+			<Add option="-lsfml-window" />
+			<Add option="-lsfml-system" />
 			<Add library="gdi32" />
 			<Add library="user32" />
 			<Add library="kernel32" />
 			<Add library="comctl32" />
 			<Add library="C:/Users/frank/Desktop/Nuevo/Proyecto/libwinmm-1.a" />
-			<Add library="sfml-audio" />
-			<Add library="sfml-graphics" />
-			<Add library="sfml-window" />
-			<Add library="sfml-system" />
 			<Add directory="SFML/lib" />
 		</Linker>
 		<Unit filename="Cabeceras/Recargador.h" />
 		<Unit filename="Cabeceras/enemy.h" />
 		<Unit filename="Cabeceras/game.h" />
-		<Unit filename="Cabeceras/miniwin.h" />
 		<Unit filename="Cabeceras/player.h" />
 		<Unit filename="Fondo/nivel_1.jpg" />
 		<Unit filename="Fondo/nivel_2.jpg" />
@@ -70,7 +65,6 @@
 		<Unit filename="Src/enemy.cpp" />
 		<Unit filename="Src/game.cpp" />
 		<Unit filename="Src/main.cpp" />
-		<Unit filename="Src/miniwin.cpp" />
 		<Unit filename="Src/player.cpp" />
 		<Unit filename="Src/recargador.cpp" />
 		<Extensions>

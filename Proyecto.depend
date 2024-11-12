@@ -81,9 +81,8 @@
 
 1731099157 c:\users\frank\desktop\nuevo\proyecto\recargador.h
 
-1731109810 source:c:\users\frank\desktop\nuevo\proyecto\src\recargador.cpp
-	"../Cabeceras/recargador.h"
-	"../Cabeceras/miniwin.h"
+1731384154 source:c:\users\frank\desktop\nuevo\proyecto\src\recargador.cpp
+	"../Cabeceras/Recargador.h"
 
 1730750919 c:\users\frank\desktop\nuevo\proyecto\include\recargador.h
 
@@ -772,7 +771,7 @@
 	<SFML/System/Vector2.hpp>
 	<SFML/System/Vector3.hpp>
 
-1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\config.hpp
+1539635488 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\config.hpp
 	"TargetConditionals.h"
 
 1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\system\clock.hpp
@@ -789,7 +788,7 @@
 	<SFML/System/Export.hpp>
 	<ostream>
 
-1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\system\fileinputstream.hpp
+1539635488 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\system\fileinputstream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
 	<SFML/System/InputStream.hpp>
@@ -871,7 +870,7 @@
 
 1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\system\vector3.inl
 
-1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\window\clipboard.hpp
+1539635488 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\window\clipboard.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/String.hpp>
 
@@ -891,7 +890,7 @@
 1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\window\contextsettings.hpp
 	<SFML/Config.hpp>
 
-1525812018 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\window\cursor.hpp
+1539635488 c:\users\frank\desktop\nuevo\proyecto\sfml\include\sfml\window\cursor.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<SFML/System/Vector2.hpp>
@@ -1219,12 +1218,18 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1731109755 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy.cpp
+1731384838 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy.cpp
 	"../Cabeceras/enemy.h"
-	"../Cabeceras/miniwin.h"
+	<SFML/Graphics.hpp>
+	<cstdlib>
+	<ctime>
+	<map>
+	<vector>
+	<string>
+	<iostream>
 
-1731099157 c:\users\frank\desktop\nuevo\proyecto\cabeceras\enemy.h
-	"miniwin.h"
+1731384327 c:\users\frank\desktop\nuevo\proyecto\cabeceras\enemy.h
+	<SFML/Graphics.hpp>
 	<string>
 	<vector>
 	<map>
@@ -1234,34 +1239,37 @@
 1461821620 c:\users\frank\desktop\nuevo\proyecto\cabeceras\miniwin.h
 	<iostream>
 
-1731109759 source:c:\users\frank\desktop\nuevo\proyecto\src\main.cpp
-	"../Cabeceras/miniwin.h"
+1731384343 source:c:\users\frank\desktop\nuevo\proyecto\src\main.cpp
 	"../Cabeceras/game.h"
+
+1731384192 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
-
-1731113227 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
+	<SFML/System.hpp>
 	<vector>
 	<string>
+	<map>
 	"player.h"
 	"enemy.h"
 	"recargador.h"
-	<SFML/Graphics.hpp>
-	<SFML/Audio.hpp>
 
-1731099158 c:\users\frank\desktop\nuevo\proyecto\cabeceras\player.h
+1731272517 c:\users\frank\desktop\nuevo\proyecto\cabeceras\player.h
+	<SFML/Graphics.hpp>
 	<string>
 	<vector>
 	<map>
 
-1731099157 c:\users\frank\desktop\nuevo\proyecto\cabeceras\recargador.h
+1731384163 c:\users\frank\desktop\nuevo\proyecto\cabeceras\recargador.h
+	<SFML/Graphics.hpp>
 
-1731109761 source:c:\users\frank\desktop\nuevo\proyecto\src\player.cpp
+1731384338 source:c:\users\frank\desktop\nuevo\proyecto\src\player.cpp
 	"../Cabeceras/player.h"
-	"../Cabeceras/miniwin.h"
-	<windows.h>
+	<SFML/Graphics.hpp>
+	<map>
+	<vector>
+	<string>
 
-1731109766 source:c:\users\frank\desktop\nuevo\proyecto\src\miniwin.cpp
+1731207115 source:c:\users\frank\desktop\nuevo\proyecto\src\miniwin.cpp
 	<fstream>
 	<sstream>
 	<queue>
@@ -1282,13 +1290,9 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1731113725 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
+1731385320 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
 	"../Cabeceras/game.h"
-	<windows.h>
-	"../Cabeceras/miniwin.h"
-	<SDL/SDL.h>
-	<SDL/SDL_mixer.h>
-	<SFML/Graphics.hpp>
-	<SFML/Audio.hpp>
+	"../Cabeceras/Recargador.h"
+	<fstream>
 	<iostream>
 

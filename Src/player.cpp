@@ -1,80 +1,57 @@
 #include "../Cabeceras/player.h"
-#include "../Cabeceras/miniwin.h"
-#include <windows.h>
+#include <SFML/Graphics.hpp>
+#include <map>
+#include <vector>
+#include <string>
 
-using namespace miniwin;
-using namespace std;
-
-const int escalado = 2;
-const bool pintarBorde = false;
+constexpr int escalado = 2;
 
 player::player(int x, int y) : offsetX(x), offsetY(y) {
     colorMap = {
-        {"color_1", {3, 2, 2}},
-        {"color_2", {46, 46, 46}},
-        {"color_3", {93, 94, 96}},
-        {"color_4", {104, 21, 23}},
-        {"color_5", {223, 43, 47}},
-        {"color_6", {27, 44, 80}},
-        {"color_7", {15, 53, 109}},
-        {"color_8", {224, 225, 227}},
-        {"color_9", {255, 253, 254}},
+        {"color_1", sf::Color(3, 2, 2)},
+        {"color_2", sf::Color(46, 46, 46)},
+        {"color_3", sf::Color(93, 94, 96)},
+        {"color_4", sf::Color(104, 21, 23)},
+        {"color_5", sf::Color(223, 43, 47)},
+        {"color_6", sf::Color(27, 44, 80)},
+        {"color_7", sf::Color(15, 53, 109)},
+        {"color_8", sf::Color(224, 225, 227)},
+        {"color_9", sf::Color(255, 253, 254)},
     };
 }
 
-void player::setColor(const string& color) {
-    if (colorMap.find(color) != colorMap.end()) {
-        vector<int> rgb = colorMap[color];
-        color_rgb(rgb[0], rgb[1], rgb[2]);
-    }
-}
-
 void player::mover() {
-    const int VELOCIDAD = 5;
+    const int VELOCIDAD = 1;
 
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-        if (offsetX > 0) {
-            offsetX -= VELOCIDAD;
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        if (offsetX > 0) offsetX -= VELOCIDAD;
     }
-    if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-        if (offsetX < 800 - ANCHO_NAVE) {
-            offsetX += VELOCIDAD;
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        if (offsetX < 800 - ANCHO_NAVE) offsetX += VELOCIDAD;
     }
-    if (GetAsyncKeyState(VK_UP) & 0x8000) {
-        if (offsetY > 0) {
-            offsetY -= VELOCIDAD;
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            if (offsetY > 0) offsetY -= VELOCIDAD;
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-        if (offsetY < 600 - ALTO_NAVE) {
-            offsetY += VELOCIDAD;
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            if (offsetY < 600 - ALTO_NAVE) offsetY += VELOCIDAD;
     }
 }
 
-void player::dibujaCuadrado(int a, int b, const string& colorRelleno) {
+void player::dibujaCuadrado(int a, int b, const std::string& colorRelleno, sf::RenderWindow& window) {
     const int x = a * escalado + offsetX;
     const int y = b * escalado + offsetY;
 
-    setColor(colorRelleno);
+    sf::RectangleShape rect(sf::Vector2f(escalado, escalado));
+    rect.setPosition(x, y);
+    rect.setFillColor(colorMap[colorRelleno]);
 
-    rectangulo_lleno(x, y, x + escalado, y + escalado);
-
-    if (pintarBorde) {
-        color_rgb(100, 100, 100);
-        linea(x, y, x, y + escalado);
-        linea(x, y + escalado, x + escalado, y + escalado);
-        linea(x + escalado, y + escalado, x + escalado, y);
-        linea(x + escalado, y, x, y);
-    }
+    window.draw(rect);
 }
 
-void player::dibujaFila(int fila, const vector<string>& colores) {
+void player::dibujaFila(int fila, const std::vector<std::string>& colores, sf::RenderWindow& window) {
     for (size_t i = 0; i < colores.size(); ++i) {
         if (!colores[i].empty()) {
-            dibujaCuadrado(i, fila, colores[i]);
+            dibujaCuadrado(i, fila, colores[i], window);
         }
     }
 }
@@ -84,56 +61,55 @@ void player::setPosicion(int x, int y) {
     offsetY = y;
 }
 
-void player::dibujar() {
-    dibujaFila(0, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(1, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(2, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(3, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(4, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(5, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(6, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(7, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(8, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(9, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(10, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(11, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_3", "color_3", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(12, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_9", "color_9", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(13, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_9", "color_1", "color_9", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(14, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_1", "color_1", "color_1", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(15, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_1", "color_9", "color_1", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(16, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_9", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(17, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_3", "color_9", "color_8", "color_8", "color_3", "color_3", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(18, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_7", "color_3", "color_9", "color_3", "color_3", "color_3", "color_8", "color_3", "color_7", "color_1", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(19, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_7", "color_6", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_3", "color_6", "color_7", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(20, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(21, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(22, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_3", "color_9", "color_8", "color_8", "color_3", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(23, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_3", "color_3", "color_3", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(24, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(25, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(26, {"", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_3", "color_9", "color_3", "color_8", "color_3", "color_8", "color_3", "color_9", "color_9", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(27, {"", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_8", "color_3", "color_9", "color_3", "color_8", "color_3", "color_8", "color_3", "color_9", "color_9", "color_9", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(28, {"", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_8", "color_8", "color_3", "color_9", "color_3", "color_8", "color_3", "color_8", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(29, {"", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", ""});
-    dibujaFila(30, {"", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_8", "color_8", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", "", ""});
-    dibujaFila(31, {"", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_3", "color_8", "color_8", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_8", "color_6", "color_6", "color_7", "color_1", "", "", "", "", "", ""});
-    dibujaFila(32, {"", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_3", "color_3", "color_3", "color_3", "color_3", "color_3", "color_3", "color_9", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", ""});
-    dibujaFila(33, {"", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_4", "color_5", "color_5", "color_5", "color_5", "color_5", "color_5", "color_5", "color_4", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", ""});
-    dibujaFila(34, {"", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_9", "color_9", "color_8", "color_8", "color_2", "color_8", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_8", "color_8", "color_2", "color_8", "color_8", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", ""});
-    dibujaFila(35, {"", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_2", "color_2", "color_2", "color_2", "color_2", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_8", "color_8", "color_2", "color_2", "color_2", "color_2", "color_2", "color_8", "color_1", "", "", "", "", "", "", ""});
-    dibujaFila(36, {"", "", "", "", "", "", "", "", "", "color_1", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", ""});
-    dibujaFila(37, {"", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_3", "color_8", "color_8", "color_8", "color_3", "color_9", "color_8", "color_8", "color_3", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "", "", "", "", "", "", "", ""});
-    dibujaFila(38, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_8", "color_8", "color_8", "color_3", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(39, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(40, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(41, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(42, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(43, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(44, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(45, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(46, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(47, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(48, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-    dibujaFila(49, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
-
+void player::dibujar(sf::RenderWindow& window) {
+    dibujaFila(0, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(1, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(2, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(3, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(4, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(5, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(6, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(7, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(8, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(9, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(10, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(11, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_3", "color_3", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(12, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_9", "color_9", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(13, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_9", "color_1", "color_9", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(14, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_1", "color_1", "color_1", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(15, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_1", "color_9", "color_1", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(16, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_9", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(17, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_3", "color_3", "color_9", "color_8", "color_8", "color_3", "color_3", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(18, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_7", "color_3", "color_9", "color_3", "color_3", "color_3", "color_8", "color_3", "color_7", "color_1", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(19, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_7", "color_6", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_3", "color_6", "color_7", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);;
+    dibujaFila(20, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(21, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(22, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_3", "color_9", "color_8", "color_8", "color_3", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(23, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_3", "color_3", "color_3", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(24, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(25, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(26, {"", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_3", "color_9", "color_3", "color_8", "color_3", "color_8", "color_3", "color_9", "color_9", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(27, {"", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_8", "color_3", "color_9", "color_3", "color_8", "color_3", "color_8", "color_3", "color_9", "color_9", "color_9", "color_9", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(28, {"", "", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_8", "color_8", "color_3", "color_9", "color_3", "color_8", "color_3", "color_8", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(29, {"", "", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(30, {"", "", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_3", "color_8", "color_8", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", "", ""}, window);
+    dibujaFila(31, {"", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_3", "color_8", "color_8", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_8", "color_6", "color_6", "color_7", "color_1", "", "", "", "", "", ""}, window);
+    dibujaFila(32, {"", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_3", "color_3", "color_3", "color_3", "color_3", "color_3", "color_3", "color_9", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", ""}, window);
+    dibujaFila(33, {"", "", "", "", "", "", "", "", "color_1", "color_7", "color_6", "color_9", "color_9", "color_8", "color_8", "color_8", "color_8", "color_4", "color_5", "color_5", "color_5", "color_5", "color_5", "color_5", "color_5", "color_4", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_6", "color_7", "color_1", "", "", "", "", "", ""}, window);
+    dibujaFila(34, {"", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_9", "color_9", "color_8", "color_8", "color_2", "color_8", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_4", "color_8", "color_8", "color_2", "color_8", "color_8", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", ""}, window);
+    dibujaFila(35, {"", "", "", "", "", "", "", "", "", "color_1", "color_9", "color_2", "color_2", "color_2", "color_2", "color_2", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_8", "color_8", "color_2", "color_2", "color_2", "color_2", "color_2", "color_8", "color_1", "", "", "", "", "", "", ""}, window);
+    dibujaFila(36, {"", "", "", "", "", "", "", "", "", "color_1", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_9", "color_9", "color_8", "color_3", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", ""}, window);
+    dibujaFila(37, {"", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_3", "color_8", "color_8", "color_8", "color_3", "color_9", "color_8", "color_8", "color_3", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(38, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_8", "color_8", "color_8", "color_3", "color_8", "color_8", "color_8", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(39, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "color_1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(40, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(41, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(42, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(43, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(44, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(45, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(46, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(47, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(48, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
+    dibujaFila(49, {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}, window);
 }

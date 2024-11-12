@@ -56,7 +56,7 @@ std::ostream& log() {
 
 VOID Thread(PVOID pvoid) {
    Sleep(50); // FIXME
-   _main_();
+   //_main_();
 }
 
 void maybe_call_main() {

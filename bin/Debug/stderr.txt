@@ -1,0 +1,2 @@
+Error al cargar la mica de fondo: Unable to load WAV file
+Error al cargar la mica de fondo: Unable to load WAV file

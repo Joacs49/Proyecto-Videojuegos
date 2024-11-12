@@ -1,11 +1,6 @@
-#include "../Cabeceras/miniwin.h"
 #include "../Cabeceras/game.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 
-using namespace miniwin;
-
-int main() {
+int main(int argc, char *argv[]) {
     game juego;
     juego.iniciar();
 
