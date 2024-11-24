@@ -8,6 +8,8 @@
 #include <map>
 #include "player.h"
 #include "enemy.h"
+#include "enemy_2.h"
+#include "enemy_3.h"
 #include "recargador.h"
 
 using namespace std;
@@ -21,8 +23,10 @@ public:
     void loop();
     void manejarEntradas();
     void actualizar();
-    void verificarColisiones();
-    void avanzarNivel();
+
+    template <typename T>
+    void verificarColisiones(std::vector<T>& enemigos);
+
     void dibujar();
     void datos(int v, int z);
 
@@ -35,11 +39,14 @@ public:
     void renderizarFondo();
     Font font;
     float velocidadEnemigos = 1.0f;
+    void mostrarMensaje(const string& mensaje, const Color& color);
 
 private:
     player player;
     bool juegoActivo;
     vector<enemy> enemigos;
+    vector<enemy_2> enemigos_2;
+    vector<enemy_3> enemigos_3;
     bool disparo = false;
     int balaX, balaY;
     int score = 0;
@@ -70,6 +77,7 @@ private:
     static const int maxBalasPorNivel[3];
 
     bool colision(int x1, int y1, int ancho1, int alto1, int x2, int y2, int ancho2, int alto2);
+
     void cargarNivel();
     void verificarColisionRecargadores();
     void mostrarPantallaInicio();

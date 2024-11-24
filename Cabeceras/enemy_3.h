@@ -1,5 +1,6 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef ENEMY_3_H
+#define ENEMY_3_H
+
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <vector>
@@ -7,17 +8,18 @@
 #include <cstdlib>
 #include <ctime>
 
-class enemy {
+class enemy_3 {
 public:
-    enemy(int x, int y, float vel);
+    enemy_3(int x, int y, float vel);
     void mover();
     void dibujar(sf::RenderWindow& window);
+
     void disparar(sf::RenderWindow& window);
 
-    int getX() const { return xPos; }
-    int getY() const { return yPos; }
-    int getAncho() const { return ancho; }
-    int getAlto() const { return alto; }
+    int getX() const { return xPos; };
+    int getY() const { return yPos; };
+    int getAncho() const { return ancho; };
+    int getAlto() const { return alto; };
 
     void setColor(const std::string& color, sf::RectangleShape& shape);
 

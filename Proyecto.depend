@@ -1218,7 +1218,7 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1731384838 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy.cpp
+1732433968 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy.cpp
 	"../Cabeceras/enemy.h"
 	<SFML/Graphics.hpp>
 	<cstdlib>
@@ -1228,7 +1228,7 @@
 	<string>
 	<iostream>
 
-1731444652 c:\users\frank\desktop\nuevo\proyecto\cabeceras\enemy.h
+1732467891 c:\users\frank\desktop\nuevo\proyecto\cabeceras\enemy.h
 	<SFML/Graphics.hpp>
 	<string>
 	<vector>
@@ -1239,10 +1239,10 @@
 1461821620 c:\users\frank\desktop\nuevo\proyecto\cabeceras\miniwin.h
 	<iostream>
 
-1731384343 source:c:\users\frank\desktop\nuevo\proyecto\src\main.cpp
+1732431682 source:c:\users\frank\desktop\nuevo\proyecto\src\main.cpp
 	"../Cabeceras/game.h"
 
-1731444611 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
+1732472327 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<SFML/System.hpp>
@@ -1251,9 +1251,11 @@
 	<map>
 	"player.h"
 	"enemy.h"
+	"enemy_2.h"
+	"enemy_3.h"
 	"recargador.h"
 
-1731444839 c:\users\frank\desktop\nuevo\proyecto\cabeceras\player.h
+1732468600 c:\users\frank\desktop\nuevo\proyecto\cabeceras\player.h
 	<SFML/Graphics.hpp>
 	<string>
 	<vector>
@@ -1290,9 +1292,45 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1731445306 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
+1732476161 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
 	"../Cabeceras/game.h"
 	"../Cabeceras/Recargador.h"
 	<fstream>
 	<iostream>
+
+1732435553 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy_2.cpp
+	"../Cabeceras/enemy_2.h"
+	<SFML/Graphics.hpp>
+	<cstdlib>
+	<ctime>
+	<map>
+	<vector>
+	<string>
+	<iostream>
+
+1732472308 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy_3.cpp
+	"../Cabeceras/enemy_3.h"
+	<SFML/Graphics.hpp>
+	<cstdlib>
+	<ctime>
+	<map>
+	<vector>
+	<string>
+	<iostream>
+
+1732468100 c:\users\frank\desktop\nuevo\proyecto\cabeceras\enemy_2.h
+	<SFML/Graphics.hpp>
+	<string>
+	<vector>
+	<map>
+	<cstdlib>
+	<ctime>
+
+1732472244 c:\users\frank\desktop\nuevo\proyecto\cabeceras\enemy_3.h
+	<SFML/Graphics.hpp>
+	<string>
+	<vector>
+	<map>
+	<cstdlib>
+	<ctime>
 

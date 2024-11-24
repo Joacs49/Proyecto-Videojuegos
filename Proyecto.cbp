@@ -50,6 +50,7 @@
 		</Linker>
 		<Unit filename="Cabeceras/Recargador.h" />
 		<Unit filename="Cabeceras/enemy.h" />
+		<Unit filename="Cabeceras/enemy_2.h" />
 		<Unit filename="Cabeceras/game.h" />
 		<Unit filename="Cabeceras/player.h" />
 		<Unit filename="Fondo/nivel_1.jpg" />
@@ -63,6 +64,8 @@
 		<Unit filename="Sonidos/game_over.wav" />
 		<Unit filename="Sonidos/sonido_enemigo.wav" />
 		<Unit filename="Src/enemy.cpp" />
+		<Unit filename="Src/enemy_2.cpp" />
+		<Unit filename="Src/enemy_3.cpp" />
 		<Unit filename="Src/game.cpp" />
 		<Unit filename="Src/main.cpp" />
 		<Unit filename="Src/player.cpp" />
