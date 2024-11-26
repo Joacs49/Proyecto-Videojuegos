@@ -1,5 +1,6 @@
 #include "../Cabeceras/game.h"
 #include "../Cabeceras/Recargador.h"
+#include "../Cabeceras/Datos.h"
 #include <fstream>
 #include <iostream>
 
@@ -15,9 +16,9 @@ Sound sonidoExplosion;
 Music musicaFondo;
 Font font;
 
-game::game() : player(300, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1),
+game::game() : player(400, 420), juegoActivo(true), disparo(false), balaX(0), balaY(0), score(0), vida(5), nivelActual(1),
             balasRestantes(maxBalasPorNivel[0]), tiempoRecargador1(0), tiempoRecargador2(0), tiempoRecargador(0),
-            recargadoresGenerados(0){
+            recargadoresGenerados(0), datosJugador(-55, 255){
 
     if (!bufferDisparoJugador.loadFromFile("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/Sonido.wav") ||
         !bufferDisparoEnemigo.loadFromFile("C:/Users/frank/Desktop/Nuevo/Proyecto/Sonidos/sonido_enemigo.wav") ||
@@ -313,15 +314,21 @@ void game::verificarColisionRecargadores() {
 }
 
 void game::dibujarBarraVida() {
+    float posX = 620;  // Posición horizontal
+    float posY = 570;  // Nueva posición vertical, más abajo
+
+    // Fondo de la barra
     RectangleShape fondoBarra(Vector2f(100, 10));
-    fondoBarra.setPosition(700, 550);
+    fondoBarra.setPosition(posX, posY);
     fondoBarra.setFillColor(Color(255, 0, 0));
 
+    // Barra de vida (proporcional a la vida restante)
     float anchoVida = 100.0f * vida / 5.0f;
     RectangleShape barraVida(Vector2f(anchoVida, 10));
-    barraVida.setPosition(700, 550);
+    barraVida.setPosition(posX, posY);
     barraVida.setFillColor(Color(0, 255, 0));
 
+    // Dibuja la barra en la ventana
     renderWindow.draw(fondoBarra);
     renderWindow.draw(barraVida);
 }
@@ -584,7 +591,7 @@ void game::cargarNivel() {
     }
 
     // Establecer la posición inicial del jugador
-    player.setPosicion(300, 420);
+    player.setPosicion(300, 370);
 
     // Inicializar vida y balas restantes según el nivel
     vida = 5;
@@ -597,13 +604,13 @@ void game::cargarNivel() {
 void game::datos(int x, int y) {
     Text texto;
     texto.setFont(font);
-    texto.setString("Joaquin Muñoz");
+    texto.setString("INKAJI");
     texto.setCharacterSize(16);
-    texto.setFillColor(Color::Red);
+    texto.setFillColor(Color::White);
 
     FloatRect textoBounds = texto.getLocalBounds();
     int posX = x + (player.getAncho() - textoBounds.width) / 2;
-    int posY = y + player.getAlto() + 5;
+    int posY = y + player.getAlto();
     texto.setPosition(posX, posY);
 
     renderWindow.draw(texto);
@@ -633,20 +640,38 @@ void game::dibujar() {
 
     if (juegoActivo) {
         player.dibujar(renderWindow);
+        datosJugador.dibujar(renderWindow);
+
+        datos(player.getX(), player.getY());
+
+        float margenIzquierdo1 = 260;
+        float posicionX1 = margenIzquierdo1;
+        float posicionY1 = 540;
 
         Text scoreText;
-        configurarTexto(scoreText, "Score: " + to_string(score), 16, Color::Red, {10, 580});
+        configurarTexto(scoreText, "Score: " + to_string(score), 16, Color::Red, {posicionX1, posicionY1});
         renderWindow.draw(scoreText);
 
+
+        float margenIzquierdo = 110;
+        float posicionX2 = margenIzquierdo;
+        float posicionY2 = 540;
+
         Text nivelText;
-        configurarTexto(nivelText, "Nivel: " + to_string(nivelActual), 16, Color::Red, {10, 560});
+        configurarTexto(nivelText, "Nivel: " + to_string(nivelActual), 16, Color::Red, {posicionX2, posicionY2});
         renderWindow.draw(nivelText);
+
 
         dibujarBarraVida();
 
+        float ventanaAncho = renderWindow.getSize().x;
+        float posicionX = ventanaAncho - 360;
+        float posicionY = 560;
+
         Text balasText;
-        configurarTexto(balasText, "Balas: x" + to_string(balasRestantes), 16, Color::Red, {700, 530});
+        configurarTexto(balasText, "Balas: x" + to_string(balasRestantes), 16, Color::Red, {posicionX, posicionY});
         renderWindow.draw(balasText);
+
     }
 
     // Dibujar enemigos de nivel 1

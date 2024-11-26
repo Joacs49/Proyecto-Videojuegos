@@ -11,6 +11,7 @@
 #include "enemy_2.h"
 #include "enemy_3.h"
 #include "recargador.h"
+#include "Datos.h"
 
 using namespace std;
 using namespace sf;
@@ -47,6 +48,7 @@ public:
 
 private:
     player player;
+    Datos datosJugador;
     bool juegoActivo;
     vector<enemy> enemigos;
     vector<enemy_2> enemigos_2;

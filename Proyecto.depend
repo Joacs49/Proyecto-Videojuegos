@@ -1242,7 +1242,7 @@
 1732431682 source:c:\users\frank\desktop\nuevo\proyecto\src\main.cpp
 	"../Cabeceras/game.h"
 
-1732583187 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
+1732591564 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<SFML/System.hpp>
@@ -1254,6 +1254,7 @@
 	"enemy_2.h"
 	"enemy_3.h"
 	"recargador.h"
+	"Datos.h"
 
 1732468600 c:\users\frank\desktop\nuevo\proyecto\cabeceras\player.h
 	<SFML/Graphics.hpp>
@@ -1264,7 +1265,7 @@
 1731444806 c:\users\frank\desktop\nuevo\proyecto\cabeceras\recargador.h
 	<SFML/Graphics.hpp>
 
-1731445453 source:c:\users\frank\desktop\nuevo\proyecto\src\player.cpp
+1732595942 source:c:\users\frank\desktop\nuevo\proyecto\src\player.cpp
 	"../Cabeceras/player.h"
 	<SFML/Graphics.hpp>
 	<map>
@@ -1292,9 +1293,10 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1732589385 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
+1732597755 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
 	"../Cabeceras/game.h"
 	"../Cabeceras/Recargador.h"
+	"../Cabeceras/Datos.h"
 	<fstream>
 	<iostream>
 
@@ -1333,4 +1335,17 @@
 	<map>
 	<cstdlib>
 	<ctime>
+
+1732591249 c:\users\frank\desktop\nuevo\proyecto\cabeceras\datos.h
+	<SFML/Graphics.hpp>
+	<map>
+	<vector>
+	<string>
+
+1732593016 source:c:\users\frank\desktop\nuevo\proyecto\src\datos.cpp
+	"../Cabeceras/Datos.h"
+	<SFML/Graphics.hpp>
+	<map>
+	<vector>
+	<string>
 

@@ -36,7 +36,7 @@ void player::mover() {
             if (offsetY > 0) offsetY -= VELOCIDAD;
     }
     if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            if (offsetY < 600 - ALTO_NAVE) offsetY += VELOCIDAD;
+            if (offsetY < 465 - ALTO_NAVE) offsetY += VELOCIDAD;
     }
 }
 
