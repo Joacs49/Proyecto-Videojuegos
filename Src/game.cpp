@@ -388,10 +388,8 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
 }
 
 void game::verificarColisiones() {
-    // Verificar colisiones para los enemigos de nivel 1
     verificarColisiones(enemigos);
 
-    // Verificar colisiones para los enemigos de nivel 2
     verificarColisiones(enemigos_2);
 
     // Verificar si se han destruido todos los enemigos
@@ -410,6 +408,7 @@ void game::verificarColisiones() {
             if (enemigosNivel1Vacios && enemigosNivel2Vacios) {
                 nivelActual = 0;
                 juegoActivo = false; // Terminar el juego después del nivel 3 solo si no quedan enemigos en los niveles 1 y 2
+                disparo = false;
             }
         }
     }
@@ -443,20 +442,34 @@ void game::avanzarNivel() {
     recargadores.clear();
     renderWindow.clear(Color::Black);
 
-    Text texto;
-    texto.setFont(font);
-    texto.setString("Nivel " + std::to_string(nivelActual) + " Completo!");
-    texto.setCharacterSize(20);
-    texto.setFillColor(Color::Red);
-    texto.setStyle(Text::Bold);
+    disparo = false;
 
-    FloatRect textoBounds = texto.getLocalBounds();
-    texto.setPosition(
-        (800 - textoBounds.width) / 2,
-        (600 - textoBounds.height) / 2
-    );
+    Texture imagenNivelCompletado;
 
-    renderWindow.draw(texto);
+    // Dependiendo del nivel, cargar la imagen correspondiente
+    if (nivelActual == 1) {
+        if (!imagenNivelCompletado.loadFromFile("C:/Users/frank/Desktop/Nuevo/Proyecto/Fondo/nivel_1_completado.jpg")) {
+            std::cerr << "No se pudo cargar la imagen de nivel 1 completado." << std::endl;
+        }
+    } else if (nivelActual == 2) {
+        if (!imagenNivelCompletado.loadFromFile("C:/Users/frank/Desktop/Nuevo/Proyecto/Fondo/nivel_2_completado.jpg")) {
+            std::cerr << "No se pudo cargar la imagen de nivel 2 completado." << std::endl;
+        }
+    }
+
+    // Crear el sprite con la imagen cargada
+    Sprite spriteNivelCompletado(imagenNivelCompletado);
+
+    // Obtener el tamaño de la ventana
+    float ventanaAncho = renderWindow.getSize().x;
+    float ventanaAlto = renderWindow.getSize().y;
+
+    // Escalar el sprite para que ocupe toda la pantalla
+    spriteNivelCompletado.setScale(ventanaAncho / imagenNivelCompletado.getSize().x, ventanaAlto / imagenNivelCompletado.getSize().y);
+
+    // Dibujar la imagen
+    renderWindow.draw(spriteNivelCompletado);
+
     renderWindow.display();
 
     nivelActual++;
@@ -465,7 +478,6 @@ void game::avanzarNivel() {
 
     sleep(milliseconds(2000));
 }
-
 
 void game::cargarRecursos() {
     for (const auto& par : fondosDeNivel) {

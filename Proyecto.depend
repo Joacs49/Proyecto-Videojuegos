@@ -1292,7 +1292,7 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1732583198 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
+1732588756 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
 	"../Cabeceras/game.h"
 	"../Cabeceras/Recargador.h"
 	<fstream>
