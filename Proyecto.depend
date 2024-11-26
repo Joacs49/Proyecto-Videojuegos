@@ -1242,7 +1242,7 @@
 1732431682 source:c:\users\frank\desktop\nuevo\proyecto\src\main.cpp
 	"../Cabeceras/game.h"
 
-1732472327 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
+1732579853 c:\users\frank\desktop\nuevo\proyecto\cabeceras\game.h
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<SFML/System.hpp>
@@ -1292,13 +1292,13 @@
 	<X11/keysym.h>
 	"miniwin.h"
 
-1732476161 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
+1732578180 source:c:\users\frank\desktop\nuevo\proyecto\src\game.cpp
 	"../Cabeceras/game.h"
 	"../Cabeceras/Recargador.h"
 	<fstream>
 	<iostream>
 
-1732435553 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy_2.cpp
+1732575950 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy_2.cpp
 	"../Cabeceras/enemy_2.h"
 	<SFML/Graphics.hpp>
 	<cstdlib>
@@ -1308,7 +1308,7 @@
 	<string>
 	<iostream>
 
-1732472308 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy_3.cpp
+1732576205 source:c:\users\frank\desktop\nuevo\proyecto\src\enemy_3.cpp
 	"../Cabeceras/enemy_3.h"
 	<SFML/Graphics.hpp>
 	<cstdlib>

@@ -40,6 +40,8 @@ public:
     Font font;
     float velocidadEnemigos = 1.0f;
     void mostrarMensaje(const string& mensaje, const Color& color);
+    void mostrarPantallaDerrota();
+    void avanzarNivel();
 
 private:
     player player;

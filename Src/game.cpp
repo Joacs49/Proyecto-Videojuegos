@@ -210,26 +210,45 @@ void game::actualizar() {
         // Verificar colisiones con los enemigos de nivel 2
         verificarColisiones(enemigos_2);
     } else if (nivelActual == 3) {
-        // Mover enemigos de nivel 3
-        for (auto& enemigo_3 : enemigos_3) {
-            enemigo_3.mover();
+        // Mover enemigos de nivel 3 (enemy_3)
+        for (auto& enemigo : enemigos) {
+            enemigo.mover();
 
             if (rand() % 100 < 5) {
-                enemigo_3.disparar(renderWindow);
+                enemigo.disparar(renderWindow);
                 reproducirEfecto(sonidoDisparoEnemigo);
             }
 
-            if (enemigo_3.disparoEnemigoActivo) {
-                enemigo_3.balaEnemigaY += 10;
+            if (enemigo.disparoEnemigoActivo) {
+                enemigo.balaEnemigaY += 10;
 
-                if (enemigo_3.balaEnemigaY >= 600) {
-                    enemigo_3.disparoEnemigoActivo = false;
+                if (enemigo.balaEnemigaY >= 600) {
+                    enemigo.disparoEnemigoActivo = false;
                 }
             }
         }
 
-        // Verificar colisiones con los enemigos de nivel 3
-        verificarColisiones(enemigos_3);
+        // Mover enemigos de nivel 3 (enemy_2)
+        for (auto& enemigo_2 : enemigos_2) {
+            enemigo_2.mover();
+
+            if (rand() % 100 < 5) { // Probabilidad del 5% de disparar
+                enemigo_2.disparar(renderWindow);
+                reproducirEfecto(sonidoDisparoEnemigo);
+            }
+
+            if (enemigo_2.disparoEnemigoActivo) {
+                enemigo_2.balaEnemigaY += 10;
+
+                if (enemigo_2.balaEnemigaY >= 600) { // Limitar el rango de la bala
+                    enemigo_2.disparoEnemigoActivo = false;
+                }
+            }
+        }
+
+        // Verificar colisiones con enemigos de nivel 3
+        verificarColisiones(enemigos);
+        verificarColisiones(enemigos_2);
     }
 
     unsigned long tiempoActual = reloj.getElapsedTime().asMilliseconds();
@@ -304,45 +323,14 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
 
     // Colisión jugador-enemigo
     for (auto& enemigo : enemigos) {
-        // Usamos la nueva función de colisión con las coordenadas del jugador y el enemigo
         if (colision(player.getX(), player.getY(), player.getAncho(), player.getAlto(),
                      enemigo.getX(), enemigo.getY(), enemigo.getAncho(), enemigo.getAlto())) {
             this->vida--;
 
             if (this->vida <= 0) {
-                // Lógica para mostrar la pantalla de derrota
+                // Mostrar pantalla de derrota y terminar el juego
                 reproducirEfecto(sonidoExplosion);
-
-                sf::Texture fondoTexture;
-                    if (!fondoTexture.loadFromFile(fondosDeNivel.at("derrota"))) {
-                        std::cerr << "Error al cargar el fondo final" << std::endl;
-                        return;
-                    }
-
-                    // Crear el sprite para el fondo
-                    sf::Sprite fondoSprite(fondoTexture);
-
-                    // Obtener el tamaño de la ventana
-                    sf::Vector2u tamanoVentana = renderWindow.getSize();
-
-                    // Escalar el sprite para que ocupe toda la ventana
-                    fondoSprite.setScale(
-                        static_cast<float>(tamanoVentana.x) / fondoTexture.getSize().x, // Escala horizontal
-                        static_cast<float>(tamanoVentana.y) / fondoTexture.getSize().y  // Escala vertical
-                    );
-
-                    // Limpiar la ventana antes de dibujar el nuevo fondo
-                    renderWindow.clear();
-
-                    // Dibujar el fondo de victoria
-                    renderWindow.draw(fondoSprite);
-
-                    // Mostrar la ventana con el fondo de victoria
-                    renderWindow.display();
-
-                sleep(milliseconds(2000));
-
-                this->juegoActivo = false;
+                mostrarPantallaDerrota(); // Función para manejar pantalla de derrota
                 enemigos.clear();
                 return;
             }
@@ -350,45 +338,14 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
 
         // Colisión de disparo enemigo con el jugador
         if (enemigo.disparoEnemigoActivo) {
-            // Suponiendo que las balas enemigas están gestionadas por sus coordenadas `balaEnemigaX` y `balaEnemigaY`
             if (colision(player.getX(), player.getY(), player.getAncho(), player.getAlto(),
                          enemigo.balaEnemigaX, enemigo.balaEnemigaY, 4, 10)) {
                 this->vida--;
 
                 if (this->vida <= 0) {
-                    // Lógica para mostrar la pantalla de derrota
                     reproducirEfecto(sonidoExplosion);
-
-                    sf::Texture fondoTexture;
-                    if (!fondoTexture.loadFromFile(fondosDeNivel.at("derrota"))) {
-                        std::cerr << "Error al cargar el fondo final" << std::endl;
-                        return;
-                    }
-
-                    // Crear el sprite para el fondo
-                    sf::Sprite fondoSprite(fondoTexture);
-
-                    // Obtener el tamaño de la ventana
-                    sf::Vector2u tamanoVentana = renderWindow.getSize();
-
-                    // Escalar el sprite para que ocupe toda la ventana
-                    fondoSprite.setScale(
-                        static_cast<float>(tamanoVentana.x) / fondoTexture.getSize().x, // Escala horizontal
-                        static_cast<float>(tamanoVentana.y) / fondoTexture.getSize().y  // Escala vertical
-                    );
-
-                    // Limpiar la ventana antes de dibujar el nuevo fondo
-                    renderWindow.clear();
-
-                    // Dibujar el fondo de victoria
-                    renderWindow.draw(fondoSprite);
-
-                    // Mostrar la ventana con el fondo de victoria
-                    renderWindow.display();
-
-                    sleep(milliseconds(2000));
-
-                    this->juegoActivo = false;
+                    mostrarPantallaDerrota();
+                    return;
                 }
 
                 reproducirEfecto(sonidoExplosion);
@@ -399,55 +356,81 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
 
     // Colisiones de la bala del jugador con los enemigos
     for (auto it = enemigos.begin(); it != enemigos.end(); ) {
-        // Comprobar si la bala del jugador colide con el enemigo
         if (colision(balaX, balaY, 4, 10, it->getX(), it->getY(), it->getAncho(), it->getAlto())) {
-            it = enemigos.erase(it); // Elimina el enemigo y avanza al siguiente
+            it = enemigos.erase(it); // Elimina al enemigo
             score += 10;
             reproducirEfecto(sonidoExplosion);
 
-            // Detener la bala después de impactar
             disparo = false;  // Desactiva la bala
-            break;  // Salir del bucle, ya que la bala solo puede impactar un enemigo
+            break; // La bala impacta solo un enemigo
         } else {
             ++it;
         }
     }
 
     // Verificar si se han destruido todos los enemigos
-    if (juegoActivo && enemigos.empty()) {
+    bool enemigosProcesados = enemigos.empty();
+    if (juegoActivo && enemigosProcesados) {
         if (nivelActual < 3) {
-            // Solo avanza de nivel si todos los enemigos han sido derrotados
-            recargadores.clear();
-            renderWindow.clear(Color::Black);
-
-            Text texto;
-            texto.setFont(font);
-            texto.setString("Nivel " + std::to_string(nivelActual) + " Completo!");
-            texto.setCharacterSize(20);
-            texto.setFillColor(Color::Red);
-            texto.setStyle(Text::Bold);
-
-            // Centrar el texto en la pantalla
-            FloatRect textoBounds = texto.getLocalBounds();
-            texto.setPosition(
-                (800 - textoBounds.width) / 2,
-                (600 - textoBounds.height) / 2
-            );
-
-            renderWindow.draw(texto);
-            renderWindow.display();
-
-            nivelActual++;
-            balasRestantes = maxBalasPorNivel[nivelActual - 1];
-            cargarNivel();
-
-            sleep(milliseconds(2000)); // Pausa de 2 segundos entre niveles
+            avanzarNivel(); // Función para manejar transición entre niveles
         } else {
             nivelActual = 0;
-            juegoActivo = false;
+            juegoActivo = false; // Terminar el juego después del nivel 3
         }
     }
 }
+
+// Función para mostrar la pantalla de derrota
+void game::mostrarPantallaDerrota() {
+    sf::Texture fondoTexture;
+    if (!fondoTexture.loadFromFile(fondosDeNivel.at("derrota"))) {
+        std::cerr << "Error al cargar el fondo final" << std::endl;
+        return;
+    }
+
+    sf::Sprite fondoSprite(fondoTexture);
+    sf::Vector2u tamanoVentana = renderWindow.getSize();
+    fondoSprite.setScale(
+        static_cast<float>(tamanoVentana.x) / fondoTexture.getSize().x,
+        static_cast<float>(tamanoVentana.y) / fondoTexture.getSize().y
+    );
+
+    renderWindow.clear();
+    renderWindow.draw(fondoSprite);
+    renderWindow.display();
+
+    sleep(milliseconds(2000));
+    this->juegoActivo = false;
+}
+
+// Función para avanzar al siguiente nivel
+void game::avanzarNivel() {
+    recargadores.clear();
+    renderWindow.clear(Color::Black);
+
+    Text texto;
+    texto.setFont(font);
+    texto.setString("Nivel " + std::to_string(nivelActual) + " Completo!");
+    texto.setCharacterSize(20);
+    texto.setFillColor(Color::Red);
+    texto.setStyle(Text::Bold);
+
+    FloatRect textoBounds = texto.getLocalBounds();
+    texto.setPosition(
+        (800 - textoBounds.width) / 2,
+        (600 - textoBounds.height) / 2
+    );
+
+    renderWindow.draw(texto);
+    renderWindow.display();
+
+    nivelActual++;
+    balasRestantes = maxBalasPorNivel[nivelActual - 1];
+    cargarNivel();
+
+    sleep(milliseconds(2000));
+}
+
 
 void game::cargarRecursos() {
     for (const auto& par : fondosDeNivel) {
@@ -486,7 +469,7 @@ void game::reproducirMusicaFondo(int nivel) {
 void game::cargarNivel() {
     enemigos.clear();
     enemigos_2.clear();
-    enemigos_3.clear();  // Asegúrate de limpiar el vector de enemigos de nivel 3
+    enemigos_3.clear();
 
     tiempoRecargador1 = 0;
     tiempoRecargador2 = 0;
@@ -505,45 +488,50 @@ void game::cargarNivel() {
     }
 
     // Crear enemigos dependiendo del nivel
-    if (nivelActual == 1) {  // Para nivel 1, solo enemigos tipo 'enemy'
+    if (nivelActual == 1) {
         vector<pair<int, int>> posiciones = {
             {100, 30}, {200, 100}, {300, 170}
         };
 
         // Cantidad de enemigos depende del nivel
-        int cantidadEnemigos = 3;  // Para nivel 1: 3 enemigos
+        int cantidadEnemigos = 3;
 
-        // Crear enemigos comunes (de tipo enemy)
         for (int i = 0; i < cantidadEnemigos; ++i) {
             enemy nuevoEnemigo(posiciones[i].first, posiciones[i].second, velocidadEnemigos);
             enemigos.push_back(nuevoEnemigo);
         }
     }
 
-    if (nivelActual == 2) {  // Para nivel 2, solo enemigos tipo 'enemy_2'
+    if (nivelActual == 2) {
         vector<pair<int, int>> posicionesNivel2 = {
             {450, 120}, {500, 180}, {550, 240}, {600, 300}, {650, 360}
         };
 
-        // Crear enemigos para nivel 2 (de tipo enemy_2)
         for (int i = 0; i < 5; ++i) {
             enemy_2 enemigoNivel2(posicionesNivel2[i].first, posicionesNivel2[i].second, velocidadEnemigos);
-            enemigos_2.push_back(enemigoNivel2);  // Asegúrate de usar el vector correcto
+            enemigos_2.push_back(enemigoNivel2);
         }
     }
 
-    if (nivelActual == 3) {  // Para nivel 3, agregar enemigos especiales tipo 'enemy_3'
+    if (nivelActual == 3) {
         vector<pair<int, int>> posicionesNivel3 = {
             {100, 100}, {200, 150}, {300, 200}, {400, 250}, {500, 300}
         };
 
-        // Cantidad de enemigos depende del nivel
-        int cantidadEnemigosNivel3 = 5;  // Para nivel 3: 5 enemigos
+        int totalEnemigosNivel3 = 5;
+        int cantidadEnemy3 = totalEnemigosNivel3 / 2; // La mitad (aproximada) será de enemy_3
+        int cantidadEnemy2 = totalEnemigosNivel3 - cantidadEnemy3; // El resto será de enemy_2
 
-        // Crear enemigos de tipo enemy_3
-        for (int i = 0; i < cantidadEnemigosNivel3; ++i) {
-            enemy_3 nuevoEnemigoEspecial(posicionesNivel3[i].first, posicionesNivel3[i].second, velocidadEnemigos);
-            enemigos_3.push_back(nuevoEnemigoEspecial);  // Asegúrate de usar el vector de enemigos_3
+        // Generar enemigos de tipo enemy_3
+        for (int i = 0; i < cantidadEnemy3; ++i) {
+            enemy nuevoEnemigoEspecial(posicionesNivel3[i].first, posicionesNivel3[i].second, velocidadEnemigos);
+            enemigos.push_back(nuevoEnemigoEspecial);
+        }
+
+        // Generar enemigos de tipo enemy_2
+        for (int i = 0; i < cantidadEnemy2; ++i) {
+            enemy_2 enemigoNivel2(posicionesNivel3[cantidadEnemy3 + i].first, posicionesNivel3[cantidadEnemy3 + i].second, velocidadEnemigos);
+            enemigos_2.push_back(enemigoNivel2);
         }
     }
 
@@ -635,7 +623,7 @@ void game::dibujar() {
             if (enemigo_2.disparoEnemigoActivo) {
                 RectangleShape balaEnemiga(Vector2f(4, 10));
                 balaEnemiga.setPosition(enemigo_2.balaEnemigaX, enemigo_2.balaEnemigaY);
-                balaEnemiga.setFillColor(Color(255, 0, 0));
+                balaEnemiga.setFillColor(Color(0, 255, 255));
                 renderWindow.draw(balaEnemiga);
             }
         }
@@ -643,13 +631,24 @@ void game::dibujar() {
 
     // Dibujar enemigos de nivel 3
     if (nivelActual == 3) {
-        for (auto& enemigo_3 : enemigos_3) {
-            enemigo_3.dibujar(renderWindow);
+        for (auto& enemigo : enemigos) {
+            enemigo.dibujar(renderWindow);
 
-            if (enemigo_3.disparoEnemigoActivo) {
+            if (enemigo.disparoEnemigoActivo) {
                 RectangleShape balaEnemiga(Vector2f(4, 10));
-                balaEnemiga.setPosition(enemigo_3.balaEnemigaX, enemigo_3.balaEnemigaY);
+                balaEnemiga.setPosition(enemigo.balaEnemigaX, enemigo.balaEnemigaY);
                 balaEnemiga.setFillColor(Color(255, 0, 0));
+                renderWindow.draw(balaEnemiga);
+            }
+        }
+
+        for (auto& enemigo_2 : enemigos_2) {
+            enemigo_2.dibujar(renderWindow);
+
+            if (enemigo_2.disparoEnemigoActivo) {
+                RectangleShape balaEnemiga(Vector2f(4, 10));
+                balaEnemiga.setPosition(enemigo_2.balaEnemigaX, enemigo_2.balaEnemigaY);
+                balaEnemiga.setFillColor(Color(0, 255, 255));
                 renderWindow.draw(balaEnemiga);
             }
         }

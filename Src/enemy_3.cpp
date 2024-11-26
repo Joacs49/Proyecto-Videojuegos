@@ -134,7 +134,7 @@ void enemy_3::disparar(RenderWindow& window) {
         }
 
         RectangleShape bala(Vector2f(5, 10));
-        bala.setFillColor(Color::Red);
+        bala.setFillColor(Color::Magenta);
         bala.setPosition(balaEnemigaX, balaEnemigaY);
         window.draw(bala);
 
