@@ -27,6 +27,8 @@ public:
     template <typename T>
     void verificarColisiones(std::vector<T>& enemigos);
 
+    void verificarColisiones();
+
     void dibujar();
     void datos(int v, int z);
 

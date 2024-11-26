@@ -188,6 +188,7 @@ void game::actualizar() {
 
         // Verificar colisiones con los enemigos de nivel 1
         verificarColisiones(enemigos);
+
     } else if (nivelActual == 2) {
         // Mover enemigos de nivel 2
         for (auto& enemigo_2 : enemigos_2) {
@@ -209,8 +210,9 @@ void game::actualizar() {
 
         // Verificar colisiones con los enemigos de nivel 2
         verificarColisiones(enemigos_2);
+
     } else if (nivelActual == 3) {
-        // Mover enemigos de nivel 3 (enemy_3)
+        // Mover enemigos de nivel 3 (enemy_3 y enemy_2)
         for (auto& enemigo : enemigos) {
             enemigo.mover();
 
@@ -251,6 +253,7 @@ void game::actualizar() {
         verificarColisiones(enemigos_2);
     }
 
+    // Verificación de recargadores
     unsigned long tiempoActual = reloj.getElapsedTime().asMilliseconds();
 
     if (balasRestantes == 0 && recargadoresGenerados < 2) {
@@ -276,6 +279,23 @@ void game::actualizar() {
     }
 
     verificarColisionRecargadores();
+
+    // Verificar si todos los enemigos han sido eliminados antes de avanzar de nivel
+    bool enemigosRestantesNivel1 = !enemigos.empty();
+    bool enemigosRestantesNivel2 = !enemigos_2.empty();
+    bool enemigosRestantesNivel3 = !enemigos_3.empty();
+
+    if (juegoActivo) {
+        if (!enemigosRestantesNivel1 && !enemigosRestantesNivel2 && !enemigosRestantesNivel3) {
+            // Si todos los enemigos de los niveles han sido eliminados
+            if (nivelActual < 3) {
+                avanzarNivel(); // Función para manejar transición entre niveles
+            } else {
+                nivelActual = 0;
+                juegoActivo = false; // Terminar el juego después del nivel 3
+            }
+        }
+    }
 }
 
 void game::verificarColisionRecargadores() {
@@ -365,18 +385,31 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
             ++it;
         }
     }
+}
+
+void game::verificarColisiones() {
+    // Verificar colisiones para los enemigos de nivel 1
+    verificarColisiones(enemigos);
+
+    // Verificar colisiones para los enemigos de nivel 2
+    verificarColisiones(enemigos_2);
 
     // Verificar si se han destruido todos los enemigos
-    bool enemigosRestantes = !enemigos.empty(); // Si el vector no está vacío, hay enemigos restantes
+    bool enemigosRestantesNivel1 = !enemigos.empty();  // Si el vector de enemigos de nivel 1 no está vacío
+    bool enemigosRestantesNivel2 = !enemigos_2.empty();  // Si el vector de enemigos de nivel 2 no está vacío
 
-    if (juegoActivo && !enemigosRestantes) {  // Si no quedan enemigos
+    if (juegoActivo && !enemigosRestantesNivel1 && !enemigosRestantesNivel2) {  // Si no quedan enemigos en ambos niveles
         if (nivelActual < 3) {
+            disparo = false;
             avanzarNivel(); // Función para manejar transición entre niveles
         } else {
-            // Verificar que los enemigos de los niveles anteriores estén vacíos
-            if (enemigos.empty() && enemigos_2.empty()) {
+            // Verificar que los enemigos de los niveles 1 y 2 estén vacíos antes de finalizar el juego
+            bool enemigosNivel1Vacios = enemigos.empty();  // Verifica el nivel 1
+            bool enemigosNivel2Vacios = enemigos_2.empty();  // Verifica el nivel 2
+
+            if (enemigosNivel1Vacios && enemigosNivel2Vacios) {
                 nivelActual = 0;
-                juegoActivo = false; // Terminar el juego después del nivel 3 solo si no quedan enemigos
+                juegoActivo = false; // Terminar el juego después del nivel 3 solo si no quedan enemigos en los niveles 1 y 2
             }
         }
     }
@@ -469,6 +502,7 @@ void game::reproducirMusicaFondo(int nivel) {
 }
 
 void game::cargarNivel() {
+    // Limpiar enemigos de niveles previos
     enemigos.clear();
     enemigos_2.clear();
     enemigos_3.clear();
@@ -506,7 +540,7 @@ void game::cargarNivel() {
 
     if (nivelActual == 2) {
         vector<pair<int, int>> posicionesNivel2 = {
-            {450, 120}, {500, 180}, {550, 240}, {600, 300}, {650, 360}
+            {100, 30}, {200, 100}, {300, 170}, {400, 210}, {500, 280}
         };
 
         for (int i = 0; i < 5; ++i) {
