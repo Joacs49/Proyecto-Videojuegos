@@ -657,7 +657,7 @@ void game::dibujar() {
             if (enemigo.disparoEnemigoActivo) {
                 RectangleShape balaEnemiga(Vector2f(4, 10));
                 balaEnemiga.setPosition(enemigo.balaEnemigaX, enemigo.balaEnemigaY);
-                balaEnemiga.setFillColor(Color(255, 0, 0));
+                balaEnemiga.setFillColor(Color(0, 0, 0));
                 renderWindow.draw(balaEnemiga);
             }
         }
