@@ -316,7 +316,6 @@ template <typename T>
 void game::verificarColisiones(std::vector<T>& enemigos) {
     static int cont = 0;
 
-    // Verifica si el juego está activo antes de hacer cualquier cosa
     if (!juegoActivo) {
         return;
     }
@@ -328,9 +327,8 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
             this->vida--;
 
             if (this->vida <= 0) {
-                // Mostrar pantalla de derrota y terminar el juego
                 reproducirEfecto(sonidoExplosion);
-                mostrarPantallaDerrota(); // Función para manejar pantalla de derrota
+                mostrarPantallaDerrota();
                 enemigos.clear();
                 return;
             }
@@ -369,13 +367,17 @@ void game::verificarColisiones(std::vector<T>& enemigos) {
     }
 
     // Verificar si se han destruido todos los enemigos
-    bool enemigosProcesados = enemigos.empty();
-    if (juegoActivo && enemigosProcesados) {
+    bool enemigosRestantes = !enemigos.empty(); // Si el vector no está vacío, hay enemigos restantes
+
+    if (juegoActivo && !enemigosRestantes) {  // Si no quedan enemigos
         if (nivelActual < 3) {
             avanzarNivel(); // Función para manejar transición entre niveles
         } else {
-            nivelActual = 0;
-            juegoActivo = false; // Terminar el juego después del nivel 3
+            // Verificar que los enemigos de los niveles anteriores estén vacíos
+            if (enemigos.empty() && enemigos_2.empty()) {
+                nivelActual = 0;
+                juegoActivo = false; // Terminar el juego después del nivel 3 solo si no quedan enemigos
+            }
         }
     }
 }
